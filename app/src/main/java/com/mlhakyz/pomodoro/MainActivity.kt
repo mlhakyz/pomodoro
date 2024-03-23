@@ -9,7 +9,6 @@ import java.text.SimpleDateFormat
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val timeFormat: SimpleDateFormat = SimpleDateFormat("mm:ss")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +21,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun btnOnStartStop (view: View){
+
+
+
+
 
 
     }
