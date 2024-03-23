@@ -10,6 +10,9 @@ import java.text.SimpleDateFormat
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val timeFormat: SimpleDateFormat = SimpleDateFormat("mm:ss")
+    private var isTimerRunning: Boolean = false
+    private var timer: CountDownTimer? = null
+    private var timeLeftInMillis: Long = 1500000 // 25 dakika
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,30 +24,38 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun btnOnStartStop (view: View){
-   object :CountDownTimer(1500000,1000){
 
-            override fun onTick(p0: Long) {
-                var   milliLeft=p0;
-                var min = (p0/(1000*60));
-                var  sec = ((p0/1000)-min*60);
-                binding.textView.text = "${timeFormat.format(p0)}"
+        fun btnOnStartStop(view: View) {
+            if (!isTimerRunning) {
+                startTimer()
+            } else {
+                pauseTimer()
             }
-
-            override fun onFinish() {
-                binding.textView.text = "0:00"
-            }
-
         }
 
 
+    private fun startTimer(){
+        timer = object : CountDownTimer(timeLeftInMillis, 1000) {
+            override fun onTick(p0: Long) {
+                timeLeftInMillis = p0
+                binding.textView.text = timeFormat.format(p0)
+            }
 
+            override fun onFinish() {
+                binding.textView.text = "00:00"
+                isTimerRunning = false
+                binding.button.text = "Start"
+            }
+        }.start()
 
-
-
-
+        isTimerRunning = true
+        binding.button.text = "Pause"
 
     }
-
+    private fun pauseTimer() {
+        timer?.cancel()
+        isTimerRunning = false
+        binding.button.text = "Start"
+    }
 
 }
