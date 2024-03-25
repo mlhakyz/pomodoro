@@ -1,9 +1,13 @@
 package com.mlhakyz.pomodoro
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.google.android.material.button.MaterialButton
 import com.mlhakyz.pomodoro.databinding.ActivityMainBinding
 import java.text.SimpleDateFormat
 
@@ -22,6 +26,46 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
+    }
+
+        fun pomodoroOnClick(view:View){
+            // Button 1'e tıklandığında yapılacak işlemler
+            changeButtonBackground(binding.pomodoroBtn)
+            // Diğer düğmelerin arka plan rengini varsayılan değere döndür
+            binding.shortBreakBtn.setBackgroundColor(getColor(R.color.HomebackgroundColorkoyu))
+            binding.longBreakBtn.setBackgroundColor(getColor(R.color.HomebackgroundColorkoyu))
+            // Button 1'e özgü işlemler
+            binding.pomodoroBtn.setBackgroundColor(resources.getColor(R.color.golge))
+        }
+
+
+
+    fun shortBreakOnClick(view: View){
+        // Button 2'ye tıklandığında yapılacak işlemler
+        changeButtonBackground(binding.shortBreakBtn)
+        // Diğer düğmelerin arka plan rengini varsayılan değere döndür
+        binding.pomodoroBtn.setBackgroundColor(getColor(R.color.HomebackgroundColorkoyu))
+        binding.longBreakBtn.setBackgroundColor(getColor(R.color.HomebackgroundColorkoyu))
+        // Button 2'ye özgü işlemler
+        binding.shortBreakBtn.setBackgroundColor(resources.getColor(R.color.golge))
+    }
+
+    fun longBreakOnClick(view: View){
+        // Button 3'e tıklandığında yapılacak işlemler
+        changeButtonBackground(binding.longBreakBtn)
+
+        // Diğer düğmelerin arka plan rengini varsayılan değere döndür
+        binding.pomodoroBtn.setBackgroundColor(getColor(R.color.HomebackgroundColorkoyu))
+        binding.shortBreakBtn.setBackgroundColor(getColor(R.color.HomebackgroundColorkoyu))
+
+        // Button 3'e özgü işlemler
+
+        binding.longBreakBtn.setBackgroundColor(resources.getColor(R.color.golge))
+    }
+    private fun changeButtonBackground(button: Button) {
+        // Tıklanan düğmenin arkaplan rengini değiştir
+        button.setBackgroundColor(getColor(R.color.red))
     }
 
 
@@ -44,18 +88,18 @@ class MainActivity : AppCompatActivity() {
             override fun onFinish() {
                 binding.textView.text = "00:00"
                 isTimerRunning = false
-                binding.button.text = "Start"
+                binding.pomodoroBtn.text = "Start"
             }
         }.start()
 
         isTimerRunning = true
-        binding.button.text = "Pause"
+        binding.pomodoroBtn.text = "Pause"
 
     }
     private fun pauseTimer() {
         timer?.cancel()
         isTimerRunning = false
-        binding.button.text = "Start"
+        binding.pomodoroBtn.text = "Start"
     }
 
 }

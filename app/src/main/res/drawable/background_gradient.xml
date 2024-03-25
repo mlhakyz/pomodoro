@@ -1,0 +1,11 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/HomebackgroundColorkoyu" />
+    <item android:top="1dp" android:bottom="1dp">
+        <shape>
+            <gradient
+                android:startColor="#c75450"
+                android:endColor="#c75450"
+                android:angle="90"/>
+        </shape>
+    </item>
+</layer-list>

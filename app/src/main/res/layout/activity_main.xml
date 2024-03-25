@@ -5,71 +5,116 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/HomebackgroundColorkoyu"
 
-    <com.google.android.material.button.MaterialButtonToggleGroup
-        android:id="@+id/toggleButton"
-        android:layout_width="366dp"
-        android:layout_height="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.947">
+   >
 
-        <Button
-            android:id="@+id/button1"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pomodoro"
-            tools:layout_editor_absoluteX="11dp"
-            tools:layout_editor_absoluteY="154dp" />
-
-        <Button
-            android:id="@+id/button2"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Short Break"
-            tools:layout_editor_absoluteX="126dp"
-            tools:layout_editor_absoluteY="154dp" />
-
-        <Button
-            android:id="@+id/button3"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Long Break"
-            tools:layout_editor_absoluteX="249dp"
-            tools:layout_editor_absoluteY="154dp" />
-    </com.google.android.material.button.MaterialButtonToggleGroup>
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="388dp"
-        android:layout_height="176dp"
-        android:gravity="center"
-        android:text="25:00"
-        android:textSize="130sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.478"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.383" />
-
-    <Button
-        android:id="@+id/button"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:onClick="btnOnStartStop"
-        android:text="Start"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toTopOf="@+id/textView"
+            app:layout_constraintEnd_toEndOf="@+id/textView"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+
+            >
+
+            <Button
+                android:id="@+id/pomodoroBtn"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/golge"
+                android:onClick="pomodoroOnClick"
+                android:text="Pomodoro"
+                android:textSize="17sp"
+                android:fontFamily="@font/ltrenovatebold"
+                android:textColor="@color/white"
+                app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Small"
+                app:strokeWidth="0dp"
+                tools:layout_editor_absoluteX="11dp"
+                tools:layout_editor_absoluteY="154dp" />
+
+            <Button
+                android:id="@+id/shortBreakBtn"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="shortBreakOnClick"
+                android:text="Short Break"
+                android:textSize="17sp"
+                android:fontFamily="@font/ltrenovateregular"
+                android:textColor="@color/white"
+                app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Small"
+                app:strokeWidth="0dp"
+                tools:layout_editor_absoluteX="126dp"
+                tools:layout_editor_absoluteY="154dp" />
+
+            <Button
+                android:id="@+id/longBreakBtn"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="longBreakOnClick"
+                android:text="Long Break"
+                android:textSize="17sp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/ltrenovateregular"
+                app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Small"
+                app:strokeWidth="0dp"
+                tools:layout_editor_absoluteX="249dp"
+                tools:layout_editor_absoluteY="154dp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="388dp"
+            android:layout_height="176dp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/my_font"
+            android:gravity="center"
+            android:text="25:00"
+            android:textColor="@color/white"
+            android:textSize="130sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.478"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.383" />
+
+        <Button
+            android:id="@+id/startPauseBtn"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/white"
+            android:fontFamily="@font/heavitas"
+            android:onClick="btnOnStartStop"
+            android:text="START"
+            android:textColor="@color/HomebackgroundColor"
+            android:textSize="34sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
+
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
