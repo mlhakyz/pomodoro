@@ -1,14 +1,18 @@
 package com.mlhakyz.pomodoro
 
 import android.content.res.ColorStateList
+import android.graphics.Typeface
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.button.MaterialButton
 import com.mlhakyz.pomodoro.databinding.ActivityMainBinding
+
 import java.text.SimpleDateFormat
 
 class MainActivity : AppCompatActivity() {
@@ -17,6 +21,8 @@ class MainActivity : AppCompatActivity() {
     private var isTimerRunning: Boolean = false
     private var timer: CountDownTimer? = null
     private var timeLeftInMillis: Long = 1500000 // 25 dakika
+    private lateinit var lftMediumFont: Typeface
+    private lateinit var lftBoldFont: Typeface
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +30,8 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-
+        lftMediumFont = ResourcesCompat.getFont(this, R.font.ltfmedium)!!
+        lftBoldFont = ResourcesCompat.getFont(this, R.font.ltfbold)!!
 
 
     }
@@ -35,8 +42,11 @@ class MainActivity : AppCompatActivity() {
             // Diğer düğmelerin arka plan rengini varsayılan değere döndür
             binding.shortBreakBtn.setBackgroundColor(getColor(R.color.HomebackgroundColorkoyu))
             binding.longBreakBtn.setBackgroundColor(getColor(R.color.HomebackgroundColorkoyu))
+            binding.shortBreakBtn.typeface = lftMediumFont
+            binding.longBreakBtn.typeface = lftMediumFont
             // Button 1'e özgü işlemler
             binding.pomodoroBtn.setBackgroundColor(resources.getColor(R.color.golge))
+            binding.pomodoroBtn.typeface = lftBoldFont
         }
 
 
@@ -47,8 +57,11 @@ class MainActivity : AppCompatActivity() {
         // Diğer düğmelerin arka plan rengini varsayılan değere döndür
         binding.pomodoroBtn.setBackgroundColor(getColor(R.color.HomebackgroundColorkoyu))
         binding.longBreakBtn.setBackgroundColor(getColor(R.color.HomebackgroundColorkoyu))
+        binding.pomodoroBtn.typeface = lftMediumFont
+        binding.longBreakBtn.typeface = lftMediumFont
         // Button 2'ye özgü işlemler
         binding.shortBreakBtn.setBackgroundColor(resources.getColor(R.color.golge))
+        binding.shortBreakBtn.typeface = lftBoldFont
     }
 
     fun longBreakOnClick(view: View){
@@ -58,10 +71,12 @@ class MainActivity : AppCompatActivity() {
         // Diğer düğmelerin arka plan rengini varsayılan değere döndür
         binding.pomodoroBtn.setBackgroundColor(getColor(R.color.HomebackgroundColorkoyu))
         binding.shortBreakBtn.setBackgroundColor(getColor(R.color.HomebackgroundColorkoyu))
-
+        binding.pomodoroBtn.typeface = lftMediumFont
+        binding.shortBreakBtn.typeface = lftMediumFont
         // Button 3'e özgü işlemler
 
         binding.longBreakBtn.setBackgroundColor(resources.getColor(R.color.golge))
+        binding.longBreakBtn.typeface = lftBoldFont
     }
     private fun changeButtonBackground(button: Button) {
         // Tıklanan düğmenin arkaplan rengini değiştir
