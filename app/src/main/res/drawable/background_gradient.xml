@@ -1,5 +1,5 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@color/HomebackgroundColorkoyu" />
+    <item android:drawable="@color/pomodoroColor" />
     <item android:top="1dp" android:bottom="1dp">
         <shape>
             <gradient

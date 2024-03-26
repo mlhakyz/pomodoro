@@ -38,50 +38,57 @@ class MainActivity : AppCompatActivity() {
 
         fun pomodoroOnClick(view:View){
             // Button 1'e tıklandığında yapılacak işlemler
-            changeButtonBackground(binding.pomodoroBtn)
-            // Diğer düğmelerin arka plan rengini varsayılan değere döndür
-            binding.shortBreakBtn.setBackgroundColor(getColor(R.color.HomebackgroundColorkoyu))
-            binding.longBreakBtn.setBackgroundColor(getColor(R.color.HomebackgroundColorkoyu))
-            binding.shortBreakBtn.typeface = lftMediumFont
-            binding.longBreakBtn.typeface = lftMediumFont
-            // Button 1'e özgü işlemler
             binding.pomodoroBtn.setBackgroundColor(resources.getColor(R.color.golge))
             binding.pomodoroBtn.typeface = lftBoldFont
+
+            // Diğer düğmelerin arka plan rengini varsayılan değere döndür
+            binding.shortBreakBtn.setBackgroundColor(getColor(R.color.pomodoroColor))
+            binding.longBreakBtn.setBackgroundColor(getColor(R.color.pomodoroColor))
+            binding.shortBreakBtn.typeface = lftMediumFont
+            binding.longBreakBtn.typeface = lftMediumFont
+
+            //Arka Plan ve Count Down Timer Ayarlama
+            binding.main.setBackgroundColor(getColor(R.color.pomodoroColor))
+            binding.startPauseBtn.setTextColor(getColor(R.color.pomodoroColor))
         }
 
 
 
     fun shortBreakOnClick(view: View){
         // Button 2'ye tıklandığında yapılacak işlemler
-        changeButtonBackground(binding.shortBreakBtn)
-        // Diğer düğmelerin arka plan rengini varsayılan değere döndür
-        binding.pomodoroBtn.setBackgroundColor(getColor(R.color.HomebackgroundColorkoyu))
-        binding.longBreakBtn.setBackgroundColor(getColor(R.color.HomebackgroundColorkoyu))
-        binding.pomodoroBtn.typeface = lftMediumFont
-        binding.longBreakBtn.typeface = lftMediumFont
-        // Button 2'ye özgü işlemler
         binding.shortBreakBtn.setBackgroundColor(resources.getColor(R.color.golge))
         binding.shortBreakBtn.typeface = lftBoldFont
+
+        // Diğer düğmelerin arka plan rengini varsayılan değere döndür
+        binding.pomodoroBtn.setBackgroundColor(getColor(R.color.shortPauseColor))
+        binding.longBreakBtn.setBackgroundColor(getColor(R.color.shortPauseColor))
+        binding.pomodoroBtn.typeface = lftMediumFont
+        binding.longBreakBtn.typeface = lftMediumFont
+
+        //Arka Plan ve Count Down Timer Ayarlama
+        binding.main.setBackgroundColor(getColor(R.color.shortPauseColor))
+        binding.startPauseBtn.setTextColor(getColor(R.color.shortPauseColor))
+
     }
 
     fun longBreakOnClick(view: View){
         // Button 3'e tıklandığında yapılacak işlemler
-        changeButtonBackground(binding.longBreakBtn)
-
-        // Diğer düğmelerin arka plan rengini varsayılan değere döndür
-        binding.pomodoroBtn.setBackgroundColor(getColor(R.color.HomebackgroundColorkoyu))
-        binding.shortBreakBtn.setBackgroundColor(getColor(R.color.HomebackgroundColorkoyu))
-        binding.pomodoroBtn.typeface = lftMediumFont
-        binding.shortBreakBtn.typeface = lftMediumFont
-        // Button 3'e özgü işlemler
-
         binding.longBreakBtn.setBackgroundColor(resources.getColor(R.color.golge))
         binding.longBreakBtn.typeface = lftBoldFont
+
+        // Diğer düğmelerin arka plan rengini varsayılan değere döndür
+        binding.pomodoroBtn.setBackgroundColor(getColor(R.color.longPauseColor))
+        binding.shortBreakBtn.setBackgroundColor(getColor(R.color.longPauseColor))
+        binding.pomodoroBtn.typeface = lftMediumFont
+        binding.shortBreakBtn.typeface = lftMediumFont
+
+
+        //Arka Plan ve Count Down Timer Ayarlama
+        binding.main.setBackgroundColor(getColor(R.color.longPauseColor))
+        binding.startPauseBtn.setTextColor(getColor(R.color.longPauseColor))
+
     }
-    private fun changeButtonBackground(button: Button) {
-        // Tıklanan düğmenin arkaplan rengini değiştir
-        button.setBackgroundColor(getColor(R.color.red))
-    }
+
 
 
         fun btnOnStartStop(view: View) {
@@ -103,18 +110,18 @@ class MainActivity : AppCompatActivity() {
             override fun onFinish() {
                 binding.textView.text = "00:00"
                 isTimerRunning = false
-                binding.pomodoroBtn.text = "Start"
+                binding.startPauseBtn.text = "Start"
             }
         }.start()
 
         isTimerRunning = true
-        binding.pomodoroBtn.text = "Pause"
+        binding.startPauseBtn.text = "Pause"
 
     }
     private fun pauseTimer() {
         timer?.cancel()
         isTimerRunning = false
-        binding.pomodoroBtn.text = "Start"
+        binding.startPauseBtn.text = "Start"
     }
 
 }

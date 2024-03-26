@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@color/HomebackgroundColorkoyu"
+    android:background="@color/pomodoroColor"
 
    >
 
@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="shortBreakOnClick"
-                android:text="Short Break"
+                android:text="Short Pause"
                 android:textSize="17sp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
@@ -71,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="longBreakOnClick"
-                android:text="Long Break"
+                android:text="Long Pause"
                 android:textSize="17sp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
@@ -111,8 +111,8 @@
             android:fontFamily="@font/heavitas"
             android:onClick="btnOnStartStop"
             android:text="START"
-            android:textColor="@color/HomebackgroundColor"
-            android:textSize="34sp"
+            android:textColor="@color/pomodoroColor"
+            android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
