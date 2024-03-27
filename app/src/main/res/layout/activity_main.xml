@@ -30,7 +30,7 @@
 
             >
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/pomodoroBtn"
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
@@ -48,7 +48,7 @@
                 tools:layout_editor_absoluteX="11dp"
                 tools:layout_editor_absoluteY="154dp" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/shortBreakBtn"
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
                 tools:layout_editor_absoluteX="126dp"
                 tools:layout_editor_absoluteY="154dp" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/longBreakBtn"
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
@@ -107,7 +107,7 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/startPauseBtn"
                 android:layout_width="200dp"
                 android:layout_height="60dp"
@@ -125,12 +125,13 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/refreshBtn"
+                android:onClick="btnOnRefresh"
                 style="?attr/materialIconButtonFilledTonalStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:backgroundTint="@color/white"
-                android:visibility="visible"
+                android:visibility="invisible"
                 app:icon="@drawable/refresharrow"
                 app:iconTint="@color/pomodoroColor"
                 app:layout_constraintBottom_toBottomOf="parent"

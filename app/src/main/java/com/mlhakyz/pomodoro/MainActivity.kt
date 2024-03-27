@@ -120,6 +120,25 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun btnOnRefresh(view: View){
+        timer?.cancel()
+        timeLeftInMillis = 0
+        if (selectedTimeInMillis.toInt() == 1500000 ){
+            binding.textView.text = "25:00"
+            pauseTimer()
+            binding.refreshBtn.visibility = View.INVISIBLE
+        }
+        else if (selectedTimeInMillis.toInt() == 300000){
+            binding.textView.text = "05:00"
+            pauseTimer()
+            binding.refreshBtn.visibility = View.INVISIBLE
+        }else{
+            binding.textView.text = "15:00"
+            pauseTimer()
+            binding.refreshBtn.visibility = View.INVISIBLE
+        }
+    }
+
 
     private fun startTimer(durationInMillis: Long){
         timer = object : CountDownTimer(durationInMillis, 1000) {
