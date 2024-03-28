@@ -2,6 +2,7 @@ package com.mlhakyz.pomodoro
 
 import android.content.res.ColorStateList
 import android.graphics.Typeface
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var lftMediumFont: Typeface
     private lateinit var lftBoldFont: Typeface
     private var timeLeftInMillis: Long = 0 // Kaldığı yerden devam etmek için tutulan süre
-
+    private var mediaPlayer: MediaPlayer? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -37,6 +38,17 @@ class MainActivity : AppCompatActivity() {
         lftMediumFont = ResourcesCompat.getFont(this, R.font.ltfmedium)!!
         lftBoldFont = ResourcesCompat.getFont(this, R.font.ltfbold)!!
         selectedTimeInMillis = pomodoroTimeMills
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.buttononof)
+
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        mediaPlayer?.release()
+        mediaPlayer = null
     }
 
     fun pomodoroOnClick(view:View){
@@ -111,6 +123,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun btnOnStartStop(view: View) {
+        mediaPlayer?.start()
         if (!isTimerRunning) {
 
             startTimer(if (timeLeftInMillis.toInt() == 0) selectedTimeInMillis else timeLeftInMillis)
@@ -155,7 +168,7 @@ class MainActivity : AppCompatActivity() {
         }.start()
 
         isTimerRunning = true
-        binding.startPauseBtn.text = "PAUSE"
+        binding.startPauseBtn.text = "STOP"
 
     }
     private fun pauseTimer() {

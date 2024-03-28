@@ -10,15 +10,38 @@
 
    >
 
+
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/settingsBtn"
+            style="?attr/materialIconButtonFilledTonalStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/transparent"
+            android:gravity="center"
+            android:onClick="btnOnSettings"
+            app:icon="@drawable/settings512"
+            app:iconGravity="textStart"
+            app:iconTint="@color/white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -36,13 +59,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/golge"
+                android:fontFamily="@font/ltfbold"
                 android:onClick="pomodoroOnClick"
-                android:text="Pomodoro"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:textSize="17sp"
-                android:fontFamily="@font/ltfbold"
+                android:text="Pomodoro"
                 android:textColor="@color/white"
+                android:textSize="17sp"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Small"
                 app:strokeWidth="0dp"
                 tools:layout_editor_absoluteX="11dp"
@@ -53,13 +76,13 @@
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/ltfmedium"
                 android:onClick="shortBreakOnClick"
-                android:text="Short Pause"
-                android:textSize="17sp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:fontFamily="@font/ltfmedium"
+                android:text="Short Pause"
                 android:textColor="@color/white"
+                android:textSize="17sp"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Small"
                 app:strokeWidth="0dp"
                 tools:layout_editor_absoluteX="126dp"
@@ -70,13 +93,13 @@
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/ltfmedium"
                 android:onClick="longBreakOnClick"
-                android:text="Long Pause"
-                android:textSize="17sp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
+                android:text="Long Pause"
                 android:textColor="@color/white"
-                android:fontFamily="@font/ltfmedium"
+                android:textSize="17sp"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Small"
                 app:strokeWidth="0dp"
                 tools:layout_editor_absoluteX="249dp"
@@ -125,21 +148,21 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/refreshBtn"
-                android:onClick="btnOnRefresh"
                 style="?attr/materialIconButtonFilledTonalStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:backgroundTint="@color/white"
-                android:visibility="invisible"
-                app:icon="@drawable/refresharrow"
+                android:gravity="center_horizontal|center_vertical"
+                android:onClick="btnOnRefresh"
+                android:visibility="visible"
+                app:icon="@drawable/refresharrow512"
                 app:iconTint="@color/pomodoroColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/startPauseBtn"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
     </LinearLayout>
