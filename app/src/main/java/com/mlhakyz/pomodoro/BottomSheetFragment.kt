@@ -3,6 +3,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.mlhakyz.pomodoro.R
 import com.mlhakyz.pomodoro.databinding.ActivityMainBinding
@@ -26,7 +27,8 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         val seekBar = bindingFragment.seekBar
         val tvSelectedTime = bindingFragment.tvSelectedTime
         val btnApply = bindingFragment.btnApply
-
+        val btnMinus = bindingFragment.btnMinus
+        val btnPlus = bindingFragment.btnPlus
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 val selectedTime = (progress + 1) * 5
@@ -37,6 +39,23 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
+        btnMinus.setOnClickListener {
+            val currentProgress = seekBar.progress
+            if (currentProgress > 0) {
+                seekBar.progress = currentProgress - 1
+            } else {
+               //minimum değere ulaşıyor
+            }
+        }
+
+        btnPlus.setOnClickListener {
+            val currentProgress = seekBar.progress
+            if (currentProgress < seekBar.max) {
+                seekBar.progress = currentProgress + 1
+            } else {
+               // maksimum değere ulaşıyor
+            }
+        }
 
         btnApply.setOnClickListener {
             dismiss()

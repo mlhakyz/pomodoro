@@ -64,11 +64,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:max="60"
-            android:progress="25"
+            android:max="11"
+            android:progress="5"
             android:progressTint="@android:color/white"
             android:thumbTint="@android:color/white"
-            android:tickMarkTint="@android:color/white" />
+            android:tickMarkTint="@android:color/white"
+            />
     </LinearLayout>
     <!-- Slider -->
 
