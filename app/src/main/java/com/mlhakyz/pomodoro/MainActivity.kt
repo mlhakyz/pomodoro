@@ -1,5 +1,6 @@
 package com.mlhakyz.pomodoro
 
+import BottomSheetFragment
 import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.media.MediaPlayer
@@ -150,6 +151,11 @@ class MainActivity : AppCompatActivity() {
             pauseTimer()
             binding.refreshBtn.visibility = View.INVISIBLE
         }
+    }
+
+    fun btnOnSettings(view:View){
+        val bottomSheetFragment = BottomSheetFragment()
+        bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
     }
 
 
