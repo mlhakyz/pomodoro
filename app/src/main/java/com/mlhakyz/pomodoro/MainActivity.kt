@@ -7,17 +7,15 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
-import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import com.google.android.material.button.MaterialButton
 import com.mlhakyz.pomodoro.databinding.ActivityMainBinding
-
 import java.text.SimpleDateFormat
 
-class MainActivity : AppCompatActivity() {
+
+class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListener {
     private lateinit var binding: ActivityMainBinding
     private val timeFormat: SimpleDateFormat = SimpleDateFormat("mm:ss")
     private var isTimerRunning: Boolean = false
@@ -30,11 +28,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var lftBoldFont: Typeface
     private var timeLeftInMillis: Long = 0 // Kaldığı yerden devam etmek için tutulan süre
     private var mediaPlayer: MediaPlayer? = null
+    private var progressAngle = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+
 
         lftMediumFont = ResourcesCompat.getFont(this, R.font.ltfmedium)!!
         lftBoldFont = ResourcesCompat.getFont(this, R.font.ltfbold)!!
@@ -42,8 +44,21 @@ class MainActivity : AppCompatActivity() {
 
         mediaPlayer = MediaPlayer.create(this, R.raw.buttononof)
 
-
     }
+    override fun onSelectedTimeChanged(selectedTime: Int) {
+        // BottomSheetFragment'dan gelen veriyi kullan
+        Toast.makeText(this, "Seçilen zaman: $selectedTime dakika", Toast.LENGTH_SHORT).show()
+        println("dakika: "+selectedTime)
+
+        val newPomodoroTime = selectedTime *60000
+        selectedTimeInMillis = newPomodoroTime.toLong()
+
+        println("millisaniye: "+selectedTimeInMillis)
+        // MainActivity'de yapılacak işlemler...
+    }
+
+
+
 
     override fun onDestroy() {
         super.onDestroy()
@@ -53,25 +68,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun pomodoroOnClick(view:View){
-            timer?.cancel()
-            timeLeftInMillis = 0
-            // Button 1'e tıklandığında yapılacak işlemler
-            binding.pomodoroBtn.setBackgroundColor(resources.getColor(R.color.golge))
-            binding.pomodoroBtn.typeface = lftBoldFont
-            binding.textView.text = "25:00"
-            selectedTimeInMillis = pomodoroTimeMills
+        timer?.cancel()
+        timeLeftInMillis = 0
+        // Button 1'e tıklandığında yapılacak işlemler
+        binding.pomodoroBtn.setBackgroundColor(resources.getColor(R.color.golge))
+        binding.pomodoroBtn.typeface = lftBoldFont
+        binding.textView.text = "25:00"
+        selectedTimeInMillis = pomodoroTimeMills
         pauseTimer()
-            //Arka Plan ve Count Down Timer Ayarlama
-            binding.main.setBackgroundColor(getColor(R.color.pomodoroColor))
-            binding.startPauseBtn.setTextColor(getColor(R.color.pomodoroColor))
+        //Arka Plan ve Count Down Timer Ayarlama
+        binding.main.setBackgroundColor(getColor(R.color.pomodoroColor))
+        binding.startPauseBtn.setTextColor(getColor(R.color.pomodoroColor))
 
-            // Diğer düğmelerin arka plan rengini varsayılan değere döndür
+        // Diğer düğmelerin arka plan rengini varsayılan değere döndür
         binding.refreshBtn.iconTint = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.pomodoroColor))
 
         binding.shortBreakBtn.setBackgroundColor(getColor(R.color.pomodoroColor))
-            binding.longBreakBtn.setBackgroundColor(getColor(R.color.pomodoroColor))
-            binding.shortBreakBtn.typeface = lftMediumFont
-            binding.longBreakBtn.typeface = lftMediumFont
+        binding.longBreakBtn.setBackgroundColor(getColor(R.color.pomodoroColor))
+        binding.shortBreakBtn.typeface = lftMediumFont
+        binding.longBreakBtn.typeface = lftMediumFont
 
     }
 
@@ -107,7 +122,7 @@ class MainActivity : AppCompatActivity() {
         binding.longBreakBtn.typeface = lftBoldFont
         binding.textView.text = "15:00"
         selectedTimeInMillis = longPauseTimeMills
-      pauseTimer()
+        pauseTimer()
         //Arka Plan ve Count Down Timer Ayarlama
         binding.main.setBackgroundColor(getColor(R.color.longPauseColor))
         binding.startPauseBtn.setTextColor(getColor(R.color.longPauseColor))
@@ -124,13 +139,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun btnOnStartStop(view: View) {
+
+        println("onStartclick: "+selectedTimeInMillis)
+
         mediaPlayer?.start()
         if (!isTimerRunning) {
 
             startTimer(if (timeLeftInMillis.toInt() == 0) selectedTimeInMillis else timeLeftInMillis)
             binding.refreshBtn.visibility = View.VISIBLE
         } else {
-                pauseTimer()
+            pauseTimer()
         }
     }
 
@@ -154,7 +172,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun btnOnSettings(view:View){
+
         val bottomSheetFragment = BottomSheetFragment()
+
+        // MainActivity sınıfının BottomSheetListener'ı implement ettiğini belirt
+        bottomSheetFragment.setBottomSheetListener(this)
+
+        // BottomSheetFragment'ı göster
         bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
     }
 
@@ -162,14 +186,23 @@ class MainActivity : AppCompatActivity() {
     private fun startTimer(durationInMillis: Long){
         timer = object : CountDownTimer(durationInMillis, 1000) {
             override fun onTick(p0: Long) {
-                timeLeftInMillis = p0 // Geri sayım süresini güncelle
+                timeLeftInMillis = p0 // Geri sayım süresini güncelleme
                 binding.textView.text = timeFormat.format(p0)
+
+
+
+
             }
 
             override fun onFinish() {
                 binding.textView.text = "00:00"
                 isTimerRunning = false
                 binding.startPauseBtn.text = "START"
+
+
+
+
+
             }
         }.start()
 
@@ -177,6 +210,7 @@ class MainActivity : AppCompatActivity() {
         binding.startPauseBtn.text = "STOP"
 
     }
+
     private fun pauseTimer() {
         timer?.cancel()
         isTimerRunning = false

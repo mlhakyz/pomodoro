@@ -8,7 +8,7 @@
     tools:context=".MainActivity"
     android:background="@color/pomodoroColor"
 
-   >
+    >
 
 
     <LinearLayout
@@ -155,7 +155,7 @@
                 android:backgroundTint="@color/white"
                 android:gravity="center_horizontal|center_vertical"
                 android:onClick="btnOnRefresh"
-                android:visibility="visible"
+                android:visibility="invisible"
                 app:icon="@drawable/refresharrow512"
                 app:iconTint="@color/pomodoroColor"
                 app:layout_constraintBottom_toBottomOf="parent"
