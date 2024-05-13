@@ -72,12 +72,12 @@
                 tools:layout_editor_absoluteY="154dp" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/shortBreakBtn"
+                android:id="@+id/shortPauseBtn"
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ltfmedium"
-                android:onClick="shortBreakOnClick"
+                android:onClick="shortPauseOnClick"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:text="Short Pause"
@@ -89,12 +89,12 @@
                 tools:layout_editor_absoluteY="154dp" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/longBreakBtn"
+                android:id="@+id/longPauseBtn"
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ltfmedium"
-                android:onClick="longBreakOnClick"
+                android:onClick="longPauseOnClick"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:text="Long Pause"
@@ -108,7 +108,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/timeText"
             android:layout_width="400dp"
             android:layout_height="176dp"
             android:layout_gravity="center"

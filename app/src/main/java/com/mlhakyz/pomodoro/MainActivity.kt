@@ -1,7 +1,10 @@
 package com.mlhakyz.pomodoro
 
 import BottomSheetFragment
+import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.graphics.Typeface
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -13,7 +16,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.mlhakyz.pomodoro.databinding.ActivityMainBinding
 import java.text.SimpleDateFormat
-
 
 class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListener {
     private lateinit var binding: ActivityMainBinding
@@ -28,7 +30,16 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
     private lateinit var lftBoldFont: Typeface
     private var timeLeftInMillis: Long = 0 // Kaldığı yerden devam etmek için tutulan süre
     private var mediaPlayer: MediaPlayer? = null
-    private var progressAngle = 0
+    private var restartControl : String = "pomodoro"
+    private var pomodoroTimeText: String = "25:00"
+    private var shortPauseTimeText: String = "05:00"
+    private var longPauseTimeText: String = "15:00"
+    val PREFS_FILENAME = "com.mlhakyz.pomodoro"
+    val keyPomodoroName = "pomodoro_duration"
+    val keyShortPauseName = "short_pause_duration"
+    val keyLongPauseTimeName = "long_pause_duration"
+    private lateinit var sharedPrefTimeSettings: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +47,14 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
         val view = binding.root
         setContentView(view)
 
+        sharedPrefTimeSettings  = getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
+        editor = sharedPrefTimeSettings.edit()
 
+        val pomodoroSharedPrefTime = sharedPrefTimeSettings.getInt(keyPomodoroName,pomodoroTimeMills.toInt())
+        val pomodoroSharedPrefSec = sharedPrefTimeSettings.getInt("keySecPomodoroName",25)
 
+        binding.timeText.text = pomodoroSharedPrefSec.toString() + ":00"
+        pomodoroTimeMills = pomodoroSharedPrefTime.toLong()
         lftMediumFont = ResourcesCompat.getFont(this, R.font.ltfmedium)!!
         lftBoldFont = ResourcesCompat.getFont(this, R.font.ltfbold)!!
         selectedTimeInMillis = pomodoroTimeMills
@@ -45,99 +62,114 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
         mediaPlayer = MediaPlayer.create(this, R.raw.buttononof)
 
     }
-    override fun onSelectedTimeChanged(selectedTime: Int) {
+    override fun onSelectedTimeChanged(pomodoroTime: Int) {
         // BottomSheetFragment'dan gelen veriyi kullan
-        Toast.makeText(this, "Seçilen zaman: $selectedTime dakika", Toast.LENGTH_SHORT).show()
-        println("dakika: "+selectedTime)
+        Toast.makeText(this, "Seçilen zaman: $pomodoroTime dakika", Toast.LENGTH_SHORT).show()
+        println("dakika: "+pomodoroTime)
 
-        val newPomodoroTime = selectedTime *60000
-        selectedTimeInMillis = newPomodoroTime.toLong()
+        val newPomodoroTime = pomodoroTime *60000
+        pomodoroTimeMills = newPomodoroTime.toLong()
+        selectedTimeInMillis = pomodoroTimeMills
+        pomodoroTimeText = pomodoroTime.toString() + ":00"
+        binding.timeText.text = pomodoroTimeText
 
+
+        editor.putInt(keyPomodoroName,newPomodoroTime)
+        editor.putInt("keySecPomodoroName",pomodoroTime)
+
+        editor.apply()
+        refresh()
         println("millisaniye: "+selectedTimeInMillis)
         // MainActivity'de yapılacak işlemler...
     }
 
 
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-
+    override fun onPause() {
+        super.onPause()
         mediaPlayer?.release()
         mediaPlayer = null
     }
 
+    private fun setTimerProperties(btn: View, timeText: String, restartControl: String, selectedTimeInMillis: Long, bgColor: Int, textColor: Int, refreshBtnColor: Int) {
+        timer?.cancel()
+        timeLeftInMillis = 0
+        btn.setBackgroundColor(resources.getColor(Colors.buttonShadowColor))
+
+        binding.timeText.text = timeText
+        this.restartControl = restartControl
+        this.selectedTimeInMillis = selectedTimeInMillis
+        pauseTimer()
+        binding.main.setBackgroundColor(getColor(bgColor))
+        binding.startPauseBtn.setTextColor(getColor(textColor))
+        binding.refreshBtn.iconTint = ColorStateList.valueOf(ContextCompat.getColor(this, refreshBtnColor))
+
+        // Set typeface for the appropriate button
+        if (btn == binding.pomodoroBtn) {
+            binding.pomodoroBtn.typeface = lftBoldFont
+            binding.shortPauseBtn.setBackgroundColor(getColor(Colors.pomodoroColor))
+            binding.longPauseBtn.setBackgroundColor(getColor(Colors.pomodoroColor))
+            binding.shortPauseBtn.typeface = lftMediumFont
+            binding.longPauseBtn.typeface = lftMediumFont
+
+        } else if(btn == binding.shortPauseBtn) {
+            binding.shortPauseBtn.typeface = lftBoldFont
+            binding.pomodoroBtn.setBackgroundColor(getColor(Colors.shortPauseColor))
+            binding.longPauseBtn.setBackgroundColor(getColor(Colors.shortPauseColor))
+            binding.pomodoroBtn.typeface = lftMediumFont
+            binding.longPauseBtn.typeface = lftMediumFont
+        }
+        else{
+            binding.longPauseBtn.typeface = lftBoldFont
+            binding.pomodoroBtn.setBackgroundColor(getColor(Colors.longPauseColor))
+            binding.shortPauseBtn.setBackgroundColor(getColor(Colors.longPauseColor))
+            binding.pomodoroBtn.typeface = lftMediumFont
+            binding.shortPauseBtn.typeface = lftMediumFont
+        }
+
+    }
     fun pomodoroOnClick(view:View){
-        timer?.cancel()
-        timeLeftInMillis = 0
-        // Button 1'e tıklandığında yapılacak işlemler
-        binding.pomodoroBtn.setBackgroundColor(resources.getColor(R.color.golge))
-        binding.pomodoroBtn.typeface = lftBoldFont
-        binding.textView.text = "25:00"
-        selectedTimeInMillis = pomodoroTimeMills
-        pauseTimer()
-        //Arka Plan ve Count Down Timer Ayarlama
-        binding.main.setBackgroundColor(getColor(R.color.pomodoroColor))
-        binding.startPauseBtn.setTextColor(getColor(R.color.pomodoroColor))
 
-        // Diğer düğmelerin arka plan rengini varsayılan değere döndür
-        binding.refreshBtn.iconTint = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.pomodoroColor))
-
-        binding.shortBreakBtn.setBackgroundColor(getColor(R.color.pomodoroColor))
-        binding.longBreakBtn.setBackgroundColor(getColor(R.color.pomodoroColor))
-        binding.shortBreakBtn.typeface = lftMediumFont
-        binding.longBreakBtn.typeface = lftMediumFont
+        setTimerProperties(
+            binding.pomodoroBtn,
+            pomodoroTimeText,
+            "pomodoro",
+            pomodoroTimeMills,
+            Colors.pomodoroColor,
+            Colors.pomodoroColor,
+            Colors.pomodoroColor
+        )
 
     }
 
-    fun shortBreakOnClick(view: View){
-        timer?.cancel()
-        timeLeftInMillis = 0
-        // Button 2'ye tıklandığında yapılacak işlemler
-        binding.shortBreakBtn.setBackgroundColor(resources.getColor(R.color.golge))
-        binding.shortBreakBtn.typeface = lftBoldFont
-        binding.textView.text = "05:00"
-        selectedTimeInMillis = shortPauseTimeMills
-        pauseTimer()
-        //Arka Plan ve Count Down Timer Ayarlama
-        binding.main.setBackgroundColor(getColor(R.color.shortPauseColor))
-        binding.startPauseBtn.setTextColor(getColor(R.color.shortPauseColor))
+    fun shortPauseOnClick(view: View){
 
-        // Diğer düğmelerin arka plan rengini varsayılan değere döndür
-        binding.refreshBtn.iconTint = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.shortPauseColor))
+        setTimerProperties(
+            binding.shortPauseBtn,
+            shortPauseTimeText,
+            "shortpause",
+            shortPauseTimeMills,
+            Colors.shortPauseColor,
+            Colors.shortPauseColor,
+            Colors.shortPauseColor
+        )
+    }
 
-        binding.pomodoroBtn.setBackgroundColor(getColor(R.color.shortPauseColor))
-        binding.longBreakBtn.setBackgroundColor(getColor(R.color.shortPauseColor))
-        binding.pomodoroBtn.typeface = lftMediumFont
-        binding.longBreakBtn.typeface = lftMediumFont
+    fun longPauseOnClick(view: View){
+
+        setTimerProperties(
+            binding.longPauseBtn,
+            longPauseTimeText,
+            "longpause",
+            longPauseTimeMills,
+            Colors.longPauseColor,
+            Colors.longPauseColor,
+            Colors.longPauseColor
+        )
+
+
 
 
     }
-
-    fun longBreakOnClick(view: View){
-        timer?.cancel()
-        timeLeftInMillis = 0
-        // Button 3'e tıklandığında yapılacak işlemler
-        binding.longBreakBtn.setBackgroundColor(resources.getColor(R.color.golge))
-        binding.longBreakBtn.typeface = lftBoldFont
-        binding.textView.text = "15:00"
-        selectedTimeInMillis = longPauseTimeMills
-        pauseTimer()
-        //Arka Plan ve Count Down Timer Ayarlama
-        binding.main.setBackgroundColor(getColor(R.color.longPauseColor))
-        binding.startPauseBtn.setTextColor(getColor(R.color.longPauseColor))
-
-        // Diğer düğmelerin arka plan rengini varsayılan değere döndür
-        binding.refreshBtn.iconTint = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.longPauseColor))
-
-        binding.pomodoroBtn.setBackgroundColor(getColor(R.color.longPauseColor))
-        binding.shortBreakBtn.setBackgroundColor(getColor(R.color.longPauseColor))
-        binding.pomodoroBtn.typeface = lftMediumFont
-        binding.shortBreakBtn.typeface = lftMediumFont
-
-
-    }
-
     fun btnOnStartStop(view: View) {
 
         println("onStartclick: "+selectedTimeInMillis)
@@ -151,24 +183,26 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
             pauseTimer()
         }
     }
-
-    fun btnOnRefresh(view: View){
+   private fun refresh() {
         timer?.cancel()
         timeLeftInMillis = 0
-        if (selectedTimeInMillis.toInt() == 1500000 ){
-            binding.textView.text = "25:00"
+        if (restartControl == "pomodoro"){
+            binding.timeText.text = pomodoroTimeText
             pauseTimer()
             binding.refreshBtn.visibility = View.INVISIBLE
         }
-        else if (selectedTimeInMillis.toInt() == 300000){
-            binding.textView.text = "05:00"
+        else if (restartControl == "shortpause"){
+            binding.timeText.text = shortPauseTimeText
             pauseTimer()
             binding.refreshBtn.visibility = View.INVISIBLE
         }else{
-            binding.textView.text = "15:00"
+            binding.timeText.text = longPauseTimeText
             pauseTimer()
             binding.refreshBtn.visibility = View.INVISIBLE
         }
+    }
+    fun btnOnRefresh(view: View){
+      refresh()
     }
 
     fun btnOnSettings(view:View){
@@ -182,26 +216,17 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
         bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
     }
 
-
     private fun startTimer(durationInMillis: Long){
         timer = object : CountDownTimer(durationInMillis, 1000) {
             override fun onTick(p0: Long) {
                 timeLeftInMillis = p0 // Geri sayım süresini güncelleme
-                binding.textView.text = timeFormat.format(p0)
-
-
-
-
+                binding.timeText.text = timeFormat.format(p0)
             }
 
             override fun onFinish() {
-                binding.textView.text = "00:00"
+                binding.timeText.text = "00:00"
                 isTimerRunning = false
                 binding.startPauseBtn.text = "START"
-
-
-
-
 
             }
         }.start()
@@ -217,5 +242,11 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
         binding.startPauseBtn.text = "START"
         binding.refreshBtn.visibility = View.INVISIBLE
     }
+}
+object Colors {
+    val pomodoroColor: Int = R.color.pomodoroColor
+    val shortPauseColor: Int = R.color.shortPauseColor
+    val longPauseColor: Int = R.color.longPauseColor
+    val buttonShadowColor: Int = R.color.golge
 
 }

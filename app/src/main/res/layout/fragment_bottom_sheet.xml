@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:max="11"
-            android:progress="5"
+            android:progress="4"
             android:progressTint="@android:color/white"
             android:thumbTint="@android:color/white"
             android:tickMarkTint="@android:color/white"

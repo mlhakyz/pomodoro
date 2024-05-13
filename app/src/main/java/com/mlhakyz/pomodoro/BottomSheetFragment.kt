@@ -69,14 +69,14 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         btnApply.setOnClickListener {
             dismiss()
             // Seçilen zamanı al
-            val selectedTime = (seekBar.progress + 1) * 5 // Dakika cinsinden
+            val pomodoroTime = (seekBar.progress + 1) * 5 // Dakika cinsinden
 
             // MainActivity'e veriyi ilet
-            bottomSheetListener?.onSelectedTimeChanged(selectedTime)
+            bottomSheetListener?.onSelectedTimeChanged(pomodoroTime)
         }
     }
     interface BottomSheetListener {
-        fun onSelectedTimeChanged(selectedTime: Int)
+        fun onSelectedTimeChanged(pomodoroTime: Int)
     }
 
 }
