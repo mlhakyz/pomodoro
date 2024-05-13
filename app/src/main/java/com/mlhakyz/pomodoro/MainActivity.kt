@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
     private val timeFormat: SimpleDateFormat = SimpleDateFormat("mm:ss")
     private var isTimerRunning: Boolean = false
     private var timer: CountDownTimer? = null
-    private var pomodoroTimeMills: Long = 1500000 // 25 dakika
+    private var pomodoroTimeMills: Long = 1800000 // 30 dakika
     private var shortPauseTimeMills: Long = 300000 // 5 dakika
     private var longPauseTimeMills: Long = 900000 // 15 dakika
     private var selectedTimeInMillis: Long = 0
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
     private var timeLeftInMillis: Long = 0 // Kaldığı yerden devam etmek için tutulan süre
     private var mediaPlayer: MediaPlayer? = null
     private var restartControl : String = "pomodoro"
-    private var pomodoroTimeText: String = "25:00"
+    private var pomodoroTimeText: String = "30:00"
     private var shortPauseTimeText: String = "05:00"
     private var longPauseTimeText: String = "15:00"
     val PREFS_FILENAME = "com.mlhakyz.pomodoro"
@@ -50,8 +50,9 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
         sharedPrefTimeSettings  = getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
         editor = sharedPrefTimeSettings.edit()
 
+
         val pomodoroSharedPrefTime = sharedPrefTimeSettings.getInt(keyPomodoroName,pomodoroTimeMills.toInt())
-        val pomodoroSharedPrefSec = sharedPrefTimeSettings.getInt("keySecPomodoroName",25)
+        val pomodoroSharedPrefSec = sharedPrefTimeSettings.getInt("keySecPomodoroName",30)
 
         binding.timeText.text = pomodoroSharedPrefSec.toString() + ":00"
         pomodoroTimeMills = pomodoroSharedPrefTime.toLong()
@@ -59,10 +60,18 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
         lftBoldFont = ResourcesCompat.getFont(this, R.font.ltfbold)!!
         selectedTimeInMillis = pomodoroTimeMills
 
+       /* val shortPauseSharedPrefTime = sharedPrefTimeSettings.getInt(keyShortPauseName,shortPauseTimeMills.toInt())
+        val shortPauseSharedPrefSec = sharedPrefTimeSettings.getInt("keySecShortPauseName",15)
+        binding.timeText.text = shortPauseSharedPrefSec.toString() + ":00"
+        shortPauseTimeMills = shortPauseSharedPrefTime.toLong()
+        lftMediumFont = ResourcesCompat.getFont(this, R.font.ltfmedium)!!
+        lftBoldFont = ResourcesCompat.getFont(this, R.font.ltfbold)!!
+        selectedTimeInMillis = shortPauseTimeMills*/
+
         mediaPlayer = MediaPlayer.create(this, R.raw.buttononof)
 
     }
-    override fun onSelectedTimeChanged(pomodoroTime: Int) {
+    override fun onSelectedTimeChanged(pomodoroTime: Int, shortPauseTime:Int) {
         // BottomSheetFragment'dan gelen veriyi kullan
         Toast.makeText(this, "Seçilen zaman: $pomodoroTime dakika", Toast.LENGTH_SHORT).show()
         println("dakika: "+pomodoroTime)
@@ -76,6 +85,16 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
 
         editor.putInt(keyPomodoroName,newPomodoroTime)
         editor.putInt("keySecPomodoroName",pomodoroTime)
+
+        val newshortPauseTime = shortPauseTime *60000
+        shortPauseTimeMills = newshortPauseTime.toLong()
+        selectedTimeInMillis = shortPauseTimeMills
+        shortPauseTimeText = shortPauseTime.toString() + ":00"
+        binding.timeText.text = shortPauseTimeText
+
+
+        editor.putInt(keyShortPauseName,newPomodoroTime)
+        editor.putInt("keySecShortPauseName",pomodoroTime)
 
         editor.apply()
         refresh()
@@ -138,7 +157,6 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
             Colors.pomodoroColor,
             Colors.pomodoroColor
         )
-
     }
 
     fun shortPauseOnClick(view: View){
