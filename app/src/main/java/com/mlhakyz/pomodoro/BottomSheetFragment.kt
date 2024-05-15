@@ -1,4 +1,6 @@
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +17,7 @@ import com.mlhakyz.pomodoro.databinding.FragmentBottomSheetBinding
 class BottomSheetFragment : BottomSheetDialogFragment() {
     private lateinit var bindingFragment: FragmentBottomSheetBinding
     private var bottomSheetListener: BottomSheetListener? = null
+    private lateinit var sharedPreferences: SharedPreferences
 
     fun setBottomSheetListener(listener: BottomSheetListener) {
         bottomSheetListener = listener
@@ -25,13 +28,31 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_bottom_sheet, container, false)
+        val view = inflater.inflate(R.layout.fragment_bottom_sheet, container, false)
+        // Saklanacak değerleri Bundle'a ekle
+        val savedValues = savedInstanceState ?: Bundle()
+        sharedPreferences = requireContext().getSharedPreferences("seekbar_prefs", Context.MODE_PRIVATE)
+
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bindingFragment = FragmentBottomSheetBinding.bind(view)
         val btnApply = bindingFragment.btnApply
+        println("girdi: ss")
+        // SharedPreferences'ten son seek bar değerlerini al
+        val pomodoroProgress = sharedPreferences.getInt("pomodoroProgress", 0)
+        val shortPauseProgress = sharedPreferences.getInt("shortPauseProgress", 0)
+
+        val pomodoroBottomSheetText = sharedPreferences.getInt("pomodoroBottomSheetText", 30)
+        val shortPauseBottomSheetText = sharedPreferences.getInt("shortPauseBottomSheetText", 5)
+        // seek bar'ların son durumunu ayarla
+        bindingFragment.seekBarPomodoro.progress = pomodoroProgress
+        bindingFragment.seekBarShortPause.progress = shortPauseProgress
+
+        bindingFragment.tvSelectedPomodoroTime.text = "$pomodoroBottomSheetText Dakika"
+        bindingFragment.tvSelectedShortPauseTime.text=  "$shortPauseBottomSheetText Dakika"
 
         val seekBarPomodoro = bindingFragment.seekBarPomodoro
         val tvSelectedPomodoroTime = bindingFragment.tvSelectedPomodoroTime
@@ -62,6 +83,8 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
                //minimum değere ulaşıyor
             }
         }
+
+
 
         btnPomodoroPlus.setOnClickListener {
             val currentProgress = seekBarPomodoro.progress
@@ -117,6 +140,21 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
             bottomSheetListener?.onSelectedTimeChanged(pomodoroTime,shortPauseTime)
         }
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // seek bar değerlerini SharedPreferences'e kaydet
+        sharedPreferences.edit().apply {
+            putInt("pomodoroProgress", bindingFragment.seekBarPomodoro.progress)
+            putInt("shortPauseProgress", bindingFragment.seekBarShortPause.progress)
+
+            val pomodoroTimeText = (bindingFragment.seekBarPomodoro.progress + 1) * 5 // Dakika cinsinden
+            val shortPauseTimeText = (bindingFragment.seekBarShortPause.progress + 1) * 5 // Dakika cinsinden
+            putInt("pomodoroBottomSheetText",pomodoroTimeText )
+            putInt("shortPauseBottomSheetText", shortPauseTimeText)
+            apply()
+        }
     }
     interface BottomSheetListener {
         fun onSelectedTimeChanged(pomodoroTime: Int,shortPauseTime: Int)
