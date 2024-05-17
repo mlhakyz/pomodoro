@@ -52,7 +52,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         bindingFragment.seekBarShortPause.progress = shortPauseProgress
 
         bindingFragment.tvSelectedPomodoroTime.text = "$pomodoroBottomSheetText Dakika"
-        bindingFragment.tvSelectedShortPauseTime.text=  "$shortPauseBottomSheetText Dakika"
+        bindingFragment.tvSelectedShortPauseTime.text=  "0$shortPauseBottomSheetText Dakika"
 
         val seekBarPomodoro = bindingFragment.seekBarPomodoro
         val tvSelectedPomodoroTime = bindingFragment.tvSelectedPomodoroTime

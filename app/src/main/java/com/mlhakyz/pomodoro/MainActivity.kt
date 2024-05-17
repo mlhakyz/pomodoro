@@ -88,7 +88,6 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
 
         val newshortPauseTime = shortPauseTime *60000
         shortPauseTimeMills = newshortPauseTime.toLong()
-        selectedTimeInMillis = shortPauseTimeMills
         shortPauseTimeText = shortPauseTime.toString() + ":00"
         binding.timeText.text = shortPauseTimeText
 
