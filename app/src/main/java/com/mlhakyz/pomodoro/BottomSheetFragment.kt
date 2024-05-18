@@ -40,18 +40,26 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         bindingFragment = FragmentBottomSheetBinding.bind(view)
         val btnApply = bindingFragment.btnApply
+
+
         // SharedPreferences'ten son seek bar değerlerini al
         val pomodoroProgress = sharedPreferences.getInt("pomodoroProgress", 5)
         val shortPauseProgress = sharedPreferences.getInt("shortPauseProgress", 0)
-
-        val pomodoroBottomSheetText = sharedPreferences.getInt("pomodoroBottomSheetText", 30)
-        val shortPauseBottomSheetText = sharedPreferences.getInt("shortPauseBottomSheetText", 5)
+        val longPauseProgress = sharedPreferences.getInt("longPauseProgress", 2)
         // seek bar'ların son durumunu ayarla
         bindingFragment.seekBarPomodoro.progress = pomodoroProgress
         bindingFragment.seekBarShortPause.progress = shortPauseProgress
+        bindingFragment.seekBarLongPause.progress = longPauseProgress
 
+        // SharedPreferences'ten son Text değerlerini al
+        val pomodoroBottomSheetText = sharedPreferences.getInt("pomodoroBottomSheetText", 30)
+        val shortPauseBottomSheetText = sharedPreferences.getInt("shortPauseBottomSheetText", 5)
+        val longPauseBottomSheetText = sharedPreferences.getInt("longPauseBottomSheetText", 5)
+        // Textler'lerın son durumunu ayarla
         bindingFragment.tvSelectedPomodoroTime.text = "$pomodoroBottomSheetText Dakika"
         bindingFragment.tvSelectedShortPauseTime.text=  "$shortPauseBottomSheetText Dakika"
+        bindingFragment.tvSelectedLongPauseTime.text=  "$longPauseBottomSheetText Dakika"
+
 
         val seekBarPomodoro = bindingFragment.seekBarPomodoro
         val tvSelectedPomodoroTime = bindingFragment.tvSelectedPomodoroTime
@@ -171,9 +179,9 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
             // Seçilen zamanı al
             val pomodoroTime = (seekBarPomodoro.progress + 1) * 5 // Dakika cinsinden
             val shortPauseTime = (seekBarShortPause.progress + 1) * 5 // Dakika cinsinden
-
+            val longPauseTime = (seekBarLongPause.progress + 1) * 5 // Dakika cinsinden
             // MainActivity'e veriyi ilet
-            bottomSheetListener?.onSelectedTimeChanged(pomodoroTime,shortPauseTime)
+            bottomSheetListener?.onSelectedTimeChanged(pomodoroTime,shortPauseTime,longPauseTime)
         }
 
     }
@@ -184,16 +192,20 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         sharedPreferences.edit().apply {
             putInt("pomodoroProgress", bindingFragment.seekBarPomodoro.progress)
             putInt("shortPauseProgress", bindingFragment.seekBarShortPause.progress)
+            putInt("longPauseProgress", bindingFragment.seekBarLongPause.progress)
 
             val pomodoroTimeText = (bindingFragment.seekBarPomodoro.progress + 1) * 5 // Dakika cinsinden
             val shortPauseTimeText = (bindingFragment.seekBarShortPause.progress + 1) * 5 // Dakika cinsinden
+            val longPauseTimeText = (bindingFragment.seekBarLongPause.progress + 1) * 5 // Dakika cinsinden
+
             putInt("pomodoroBottomSheetText",pomodoroTimeText )
             putInt("shortPauseBottomSheetText", shortPauseTimeText)
+            putInt("longPauseBottomSheetText", longPauseTimeText)
             apply()
         }
     }
     interface BottomSheetListener {
-        fun onSelectedTimeChanged(pomodoroTime: Int,shortPauseTime: Int)
+        fun onSelectedTimeChanged(pomodoroTime: Int,shortPauseTime: Int,longPauseTime: Int)
     }
 
 }

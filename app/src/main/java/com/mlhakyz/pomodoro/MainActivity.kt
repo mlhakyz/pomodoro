@@ -56,8 +56,6 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
         val pomodoroSharedPrefTime = sharedPrefTimeSettings.getInt(keyPomodoroName,pomodoroTimeMills.toInt())
         val pomodoroSharedPrefSec = sharedPrefTimeSettings.getInt("keySecPomodoroName",30)
 
-
-
         if (pomodoroSharedPrefSec == 5 ){
             pomodoroTimeText = "0$pomodoroSharedPrefSec:00"
         }
@@ -70,22 +68,12 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
 
         selectedTimeInMillis = pomodoroTimeMills
 
-       /* val shortPauseSharedPrefTime = sharedPrefTimeSettings.getInt(keyShortPauseName,shortPauseTimeMills.toInt())
-        val shortPauseSharedPrefSec = sharedPrefTimeSettings.getInt("keySecShortPauseName",15)
-        binding.timeText.text = shortPauseSharedPrefSec.toString() + ":00"
-        shortPauseTimeMills = shortPauseSharedPrefTime.toLong()
-        lftMediumFont = ResourcesCompat.getFont(this, R.font.ltfmedium)!!
-        lftBoldFont = ResourcesCompat.getFont(this, R.font.ltfbold)!!
-        selectedTimeInMillis = shortPauseTimeMills*/
 
         mediaPlayer = MediaPlayer.create(this, R.raw.buttononof)
 
     }
-    override fun onSelectedTimeChanged(pomodoroTime: Int, shortPauseTime:Int) {
-        // BottomSheetFragment'dan gelen veriyi kullan
-        Toast.makeText(this, "Seçilen zaman: $pomodoroTime dakika", Toast.LENGTH_SHORT).show()
-        println("dakika: "+pomodoroTime)
-
+    override fun onSelectedTimeChanged(pomodoroTime: Int, shortPauseTime:Int, longPauseTime:Int) {
+        //Pomodoro İşlemleri
         val newPomodoroTime = pomodoroTime *60000L
         pomodoroTimeMills = newPomodoroTime.toLong()
         selectedTimeInMillis = pomodoroTimeMills
@@ -102,6 +90,7 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
         editor.putInt(keyPomodoroName,newPomodoroTime.toInt())
         editor.putInt("keySecPomodoroName",pomodoroTime)
 
+        //ShortPause İşlemleri
         val newShortPauseTime = shortPauseTime *60000L
         shortPauseTimeMills = newShortPauseTime.toLong()
         if (shortPauseTime == 5 ){
@@ -116,13 +105,31 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
         editor.putInt(keyShortPauseName,newShortPauseTime.toInt())
         editor.putInt("keySecShortPauseName",shortPauseTime)
 
+        //LongPause İşlemleri
+
+        val newLongPauseTime = longPauseTime *60000L
+        shortPauseTimeMills = newShortPauseTime.toLong()
+        if (longPauseTime == 5 ){
+            longPauseTimeText = "0$longPauseTime:00"
+        }
+        else{
+            longPauseTimeText = "$longPauseTime:00"
+        }
+
+        binding.timeText.text = longPauseTimeText
+
+        editor.putInt(keyLongPauseTimeName,newLongPauseTime.toInt())
+        editor.putInt("keySecLongPauseName",longPauseTime)
+
         // Seçilen süreye göre selectedTimeInMillis değerini güncelle
         selectedTimeInMillis = if (restartControl == "pomodoro") {
             newPomodoroTime
-        } else {
+        } else if (restartControl == "shortpause") {
             newShortPauseTime
         }
-
+        else {
+            newLongPauseTime
+        }
 
         editor.apply()
         refresh()
@@ -222,6 +229,21 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
     }
 
     fun longPauseOnClick(view: View){
+
+        val longPauseSharedPrefTime = sharedPrefTimeSettings.getInt(keyLongPauseTimeName,longPauseTimeMills.toInt())
+        val longPauseSharedPrefSec = sharedPrefTimeSettings.getInt("keySecLongPauseName",15)
+
+        if (longPauseSharedPrefSec == 5 ){
+            longPauseTimeText = "0$longPauseSharedPrefSec:00"
+        }
+        else{
+            longPauseTimeText = "$longPauseSharedPrefSec:00"
+        }
+
+        binding.timeText.text = longPauseTimeText
+
+        longPauseTimeMills = longPauseSharedPrefTime.toLong()
+
 
         setTimerProperties(
             binding.longPauseBtn,
