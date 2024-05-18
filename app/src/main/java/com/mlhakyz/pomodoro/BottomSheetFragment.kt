@@ -42,7 +42,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         val btnApply = bindingFragment.btnApply
         println("girdi: ss")
         // SharedPreferences'ten son seek bar değerlerini al
-        val pomodoroProgress = sharedPreferences.getInt("pomodoroProgress", 0)
+        val pomodoroProgress = sharedPreferences.getInt("pomodoroProgress", 5)
         val shortPauseProgress = sharedPreferences.getInt("shortPauseProgress", 0)
 
         val pomodoroBottomSheetText = sharedPreferences.getInt("pomodoroBottomSheetText", 30)
@@ -52,7 +52,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         bindingFragment.seekBarShortPause.progress = shortPauseProgress
 
         bindingFragment.tvSelectedPomodoroTime.text = "$pomodoroBottomSheetText Dakika"
-        bindingFragment.tvSelectedShortPauseTime.text=  "0$shortPauseBottomSheetText Dakika"
+        bindingFragment.tvSelectedShortPauseTime.text=  "$shortPauseBottomSheetText Dakika"
 
         val seekBarPomodoro = bindingFragment.seekBarPomodoro
         val tvSelectedPomodoroTime = bindingFragment.tvSelectedPomodoroTime

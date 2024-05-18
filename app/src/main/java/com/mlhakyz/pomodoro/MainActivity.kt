@@ -47,17 +47,27 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
         val view = binding.root
         setContentView(view)
 
+        lftMediumFont = ResourcesCompat.getFont(this, R.font.ltfmedium)!!
+        lftBoldFont = ResourcesCompat.getFont(this, R.font.ltfbold)!!
+
         sharedPrefTimeSettings  = getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
         editor = sharedPrefTimeSettings.edit()
-
 
         val pomodoroSharedPrefTime = sharedPrefTimeSettings.getInt(keyPomodoroName,pomodoroTimeMills.toInt())
         val pomodoroSharedPrefSec = sharedPrefTimeSettings.getInt("keySecPomodoroName",30)
 
-        binding.timeText.text = pomodoroSharedPrefSec.toString() + ":00"
+
+
+        if (pomodoroSharedPrefSec == 5 ){
+            pomodoroTimeText = "0$pomodoroSharedPrefSec:00"
+        }
+        else{
+            pomodoroTimeText = "$pomodoroSharedPrefSec:00"
+        }
+        binding.timeText.text = pomodoroTimeText
+
         pomodoroTimeMills = pomodoroSharedPrefTime.toLong()
-        lftMediumFont = ResourcesCompat.getFont(this, R.font.ltfmedium)!!
-        lftBoldFont = ResourcesCompat.getFont(this, R.font.ltfbold)!!
+
         selectedTimeInMillis = pomodoroTimeMills
 
        /* val shortPauseSharedPrefTime = sharedPrefTimeSettings.getInt(keyShortPauseName,shortPauseTimeMills.toInt())
@@ -76,24 +86,43 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
         Toast.makeText(this, "Seçilen zaman: $pomodoroTime dakika", Toast.LENGTH_SHORT).show()
         println("dakika: "+pomodoroTime)
 
-        val newPomodoroTime = pomodoroTime *60000
+        val newPomodoroTime = pomodoroTime *60000L
         pomodoroTimeMills = newPomodoroTime.toLong()
         selectedTimeInMillis = pomodoroTimeMills
-        pomodoroTimeText = pomodoroTime.toString() + ":00"
+
+        if (pomodoroTime == 5 ){
+            pomodoroTimeText = "0$pomodoroTime:00"
+        }
+        else{
+            pomodoroTimeText = "$pomodoroTime:00"
+        }
+
         binding.timeText.text = pomodoroTimeText
 
-
-        editor.putInt(keyPomodoroName,newPomodoroTime)
+        editor.putInt(keyPomodoroName,newPomodoroTime.toInt())
         editor.putInt("keySecPomodoroName",pomodoroTime)
 
-        val newshortPauseTime = shortPauseTime *60000
-        shortPauseTimeMills = newshortPauseTime.toLong()
-        shortPauseTimeText = shortPauseTime.toString() + ":00"
+        val newShortPauseTime = shortPauseTime *60000L
+        shortPauseTimeMills = newShortPauseTime.toLong()
+        if (shortPauseTime == 5 ){
+            shortPauseTimeText = "0$shortPauseTime:00"
+        }
+        else{
+            shortPauseTimeText = "$shortPauseTime:00"
+        }
+
         binding.timeText.text = shortPauseTimeText
 
+        editor.putInt(keyShortPauseName,newShortPauseTime.toInt())
+        editor.putInt("keySecShortPauseName",shortPauseTime)
 
-        editor.putInt(keyShortPauseName,newPomodoroTime)
-        editor.putInt("keySecShortPauseName",pomodoroTime)
+        // Seçilen süreye göre selectedTimeInMillis değerini güncelle
+        selectedTimeInMillis = if (restartControl == "pomodoro") {
+            newPomodoroTime
+        } else {
+            newShortPauseTime
+        }
+
 
         editor.apply()
         refresh()
@@ -108,7 +137,8 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
         mediaPlayer = null
     }
 
-    private fun setTimerProperties(btn: View, timeText: String, restartControl: String, selectedTimeInMillis: Long, bgColor: Int, textColor: Int, refreshBtnColor: Int) {
+// Timer görünümünü ayarlar ve arka plan rengini değiştirir
+private fun setTimerProperties(btn: View, timeText: String, restartControl: String, selectedTimeInMillis: Long, bgColor: Int, textColor: Int, refreshBtnColor: Int) {
         timer?.cancel()
         timeLeftInMillis = 0
         btn.setBackgroundColor(resources.getColor(Colors.buttonShadowColor))
@@ -146,7 +176,13 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
 
     }
     fun pomodoroOnClick(view:View){
-
+        val pomodoroSharedPrefSec = sharedPrefTimeSettings.getInt("keySecPomodoroName",30)
+        if (pomodoroSharedPrefSec == 5 ){
+            pomodoroTimeText = "0$pomodoroSharedPrefSec:00"
+        }
+        else{
+            pomodoroTimeText = "$pomodoroSharedPrefSec:00"
+        }
         setTimerProperties(
             binding.pomodoroBtn,
             pomodoroTimeText,
@@ -159,6 +195,20 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
     }
 
     fun shortPauseOnClick(view: View){
+
+        val shortPauseSharedPrefTime = sharedPrefTimeSettings.getInt(keyShortPauseName,shortPauseTimeMills.toInt())
+        val shortPauseSharedPrefSec = sharedPrefTimeSettings.getInt("keySecShortPauseName",5)
+
+        if (shortPauseSharedPrefSec == 5 ){
+            shortPauseTimeText = "0$shortPauseSharedPrefSec:00"
+        }
+        else{
+            shortPauseTimeText = "$shortPauseSharedPrefSec:00"
+        }
+
+        binding.timeText.text = shortPauseTimeText
+
+        shortPauseTimeMills = shortPauseSharedPrefTime.toLong()
 
         setTimerProperties(
             binding.shortPauseBtn,

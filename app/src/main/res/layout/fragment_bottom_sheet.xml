@@ -131,6 +131,68 @@
             android:tickMarkTint="@android:color/white" />
     </LinearLayout>
 
+    <!-- LongPause zamanı ayarla yazısı -->
+    <TextView
+        android:id="@+id/tvLongPauseTitle"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Long Pause Zamanı Ayarla"
+        android:textSize="18sp"
+        android:layout_marginBottom="10dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+        <!-- - butonu -->
+        <ImageButton
+            android:id="@+id/btnLongPauseMinus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/minus24"
+            android:background="@android:color/transparent" />
+
+        <!-- Dakika göstergesi -->
+
+        <!-- + butonu -->
+        <TextView
+            android:id="@+id/tvSelectedLongPauseTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="15 Dakika"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <ImageButton
+            android:id="@+id/btnLongPausePlus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/add24"
+            android:background="@android:color/transparent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
+        <SeekBar
+            android:id="@+id/seekBarLongPause"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:max="11"
+            android:progress="2"
+            android:progressTint="@android:color/white"
+            android:thumbTint="@android:color/white"
+            android:tickMarkTint="@android:color/white" />
+    </LinearLayout>
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnApply"
         android:layout_width="wrap_content"
