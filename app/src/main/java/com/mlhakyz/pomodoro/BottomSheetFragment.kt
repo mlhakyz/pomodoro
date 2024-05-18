@@ -40,7 +40,6 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         bindingFragment = FragmentBottomSheetBinding.bind(view)
         val btnApply = bindingFragment.btnApply
-        println("girdi: ss")
         // SharedPreferences'ten son seek bar değerlerini al
         val pomodoroProgress = sharedPreferences.getInt("pomodoroProgress", 5)
         val shortPauseProgress = sharedPreferences.getInt("shortPauseProgress", 0)
@@ -63,6 +62,11 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         val tvSelectedShortPauseTime = bindingFragment.tvSelectedShortPauseTime
         val btnShortPauseMinus = bindingFragment.btnShortPauseMinus
         val btnShortPausePlus = bindingFragment.btnShortPausePlus
+
+        val seekBarLongPause = bindingFragment.seekBarLongPause
+        val tvSelectedLongPauseTime = bindingFragment.tvSelectedLongPauseTime
+        val btnLongPauseMinus = bindingFragment.btnLongPauseMinus
+        val btnLongPausePlus = bindingFragment.btnLongPausePlus
 
         //POMODORO START
         seekBarPomodoro.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -128,6 +132,38 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
             }
         }
         //SHORTPAUSE FİNİSH
+
+
+        //LONGPAUSE START
+
+        seekBarLongPause.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                val selectedTime = (progress + 1) * 5
+                tvSelectedLongPauseTime.text = "$selectedTime Dakika"
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
+        btnLongPauseMinus.setOnClickListener {
+            val currentProgress = seekBarLongPause.progress
+            if (currentProgress > 0) {
+                seekBarLongPause.progress = currentProgress - 1
+            } else {
+                //minimum değere ulaşıyor
+            }
+        }
+
+        btnLongPausePlus.setOnClickListener {
+            val currentProgress = seekBarLongPause.progress
+            if (currentProgress < seekBarLongPause.max) {
+                seekBarLongPause.progress = currentProgress + 1
+            } else {
+                // maksimum değere ulaşıyor
+            }
+        }
+        //LONGPAUSE FİNİSH
 
         // onViewCreated fonksiyonu içinde...
         btnApply.setOnClickListener {
