@@ -136,8 +136,6 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
         println("millisaniye: "+selectedTimeInMillis)
         // MainActivity'de yapılacak işlemler...
     }
-
-
     override fun onPause() {
         super.onPause()
         mediaPlayer?.release()
@@ -201,8 +199,7 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
         )
     }
 
-    fun shortPauseOnClick(view: View){
-
+   private fun handleShortPause() {
         val shortPauseSharedPrefTime = sharedPrefTimeSettings.getInt(keyShortPauseName,shortPauseTimeMills.toInt())
         val shortPauseSharedPrefSec = sharedPrefTimeSettings.getInt("keySecShortPauseName",5)
 
@@ -226,6 +223,10 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
             Colors.shortPauseColor,
             Colors.shortPauseColor
         )
+
+    }
+    fun shortPauseOnClick(view: View){
+        handleShortPause()
     }
 
     fun longPauseOnClick(view: View){
@@ -254,14 +255,13 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
             Colors.longPauseColor,
             Colors.longPauseColor
         )
-
-
-
-
     }
-    fun btnOnStartStop(view: View) {
 
+    private fun handleOnStartStop(){
         println("onStartclick: "+selectedTimeInMillis)
+        if (restartControl== "pomodoro"){
+            selectedTimeInMillis = 5000
+        }
 
         mediaPlayer?.start()
         if (!isTimerRunning) {
@@ -271,6 +271,10 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
         } else {
             pauseTimer()
         }
+    }
+    fun btnOnStartStop(view: View) {
+
+        handleOnStartStop()
     }
    private fun refresh() {
         timer?.cancel()
@@ -317,6 +321,10 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
                 isTimerRunning = false
                 binding.startPauseBtn.text = "START"
 
+                if (restartControl == "pomodoro"){
+                    handleShortPause()
+                    handleOnStartStop()
+                }
             }
         }.start()
 
@@ -332,6 +340,7 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
         binding.refreshBtn.visibility = View.INVISIBLE
     }
 }
+
 object Colors {
     val pomodoroColor: Int = R.color.pomodoroColor
     val shortPauseColor: Int = R.color.shortPauseColor
