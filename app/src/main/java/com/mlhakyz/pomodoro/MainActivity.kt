@@ -180,7 +180,8 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
         }
 
     }
-    fun pomodoroOnClick(view:View){
+
+    private fun handlePomodoro(){
         val pomodoroSharedPrefSec = sharedPrefTimeSettings.getInt("keySecPomodoroName",30)
         if (pomodoroSharedPrefSec == 5 ){
             pomodoroTimeText = "0$pomodoroSharedPrefSec:00"
@@ -197,6 +198,10 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
             Colors.pomodoroColor,
             Colors.pomodoroColor
         )
+    }
+
+    fun pomodoroOnClick(view:View){
+      handlePomodoro()
     }
 
    private fun handleShortPause() {
@@ -229,8 +234,7 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
         handleShortPause()
     }
 
-    fun longPauseOnClick(view: View){
-
+    private fun handleLongPause(){
         val longPauseSharedPrefTime = sharedPrefTimeSettings.getInt(keyLongPauseTimeName,longPauseTimeMills.toInt())
         val longPauseSharedPrefSec = sharedPrefTimeSettings.getInt("keySecLongPauseName",15)
 
@@ -256,12 +260,18 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
             Colors.longPauseColor
         )
     }
+    fun longPauseOnClick(view: View){
+        handleLongPause()
+
+    }
 
     private fun handleOnStartStop(){
         println("onStartclick: "+selectedTimeInMillis)
-        if (restartControl== "pomodoro"){
+
+        //Test Short Time
+        /*if (restartControl== "pomodoro"){
             selectedTimeInMillis = 5000
-        }
+        }*/
 
         mediaPlayer?.start()
         if (!isTimerRunning) {
@@ -273,7 +283,6 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
         }
     }
     fun btnOnStartStop(view: View) {
-
         handleOnStartStop()
     }
    private fun refresh() {
@@ -323,6 +332,14 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
 
                 if (restartControl == "pomodoro"){
                     handleShortPause()
+                    handleOnStartStop()
+                }
+                else if(restartControl == "shortpause"){
+                    handleLongPause()
+                    handleOnStartStop()
+                }
+                else if(restartControl == "longpause"){
+                    handlePomodoro()
                     handleOnStartStop()
                 }
             }
