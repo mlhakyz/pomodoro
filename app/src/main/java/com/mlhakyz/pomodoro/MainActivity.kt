@@ -26,6 +26,8 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
     private var shortPauseTimeMills: Long = 300000 // 5 dakika
     private var longPauseTimeMills: Long = 900000 // 15 dakika
     private var selectedTimeInMillis: Long = 0
+    private var shortPomodoroCycles: Int = 0
+    private var longPomodoroCycles: Int = 0
     private lateinit var lftMediumFont: Typeface
     private lateinit var lftBoldFont: Typeface
     private var timeLeftInMillis: Long = 0 // Kaldığı yerden devam etmek için tutulan süre
@@ -272,7 +274,7 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
         /*if (restartControl== "pomodoro"){
             selectedTimeInMillis = 5000
         }*/
-
+        selectedTimeInMillis = 5000
         mediaPlayer?.start()
         if (!isTimerRunning) {
 
@@ -331,12 +333,21 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
                 binding.startPauseBtn.text = "START"
 
                 if (restartControl == "pomodoro"){
-                    handleShortPause()
-                    handleOnStartStop()
+                    shortPomodoroCycles++
+                    if(shortPomodoroCycles == 4){
+                        shortPomodoroCycles = 0
+                        handleLongPause()
+                        handleOnStartStop()
+                    }else{
+                        handleShortPause()
+                        handleOnStartStop()
+                    }
+
                 }
                 else if(restartControl == "shortpause"){
-                    handleLongPause()
+                    handlePomodoro()
                     handleOnStartStop()
+
                 }
                 else if(restartControl == "longpause"){
                     handlePomodoro()
