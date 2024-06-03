@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="longPauseColor">#5F4B8B</color>
-    <color name="pomodoroColor">#c75450</color>
-    <color name="shortPauseColor">#007A80</color>
+    <color name="pomodoroTimeTextColor">#552222</color>
+    <color name="longPauseColor">#F3E5F5</color>
+    <color name="pomodoroColor">#FFE2E5</color>
+    <color name="shortPauseColor">#E3F2FD</color>
     <color name="bottomNBColor">#625D73</color>
+    <color name="longPauseColora">#5F4B8B</color>
+    <color name="pomodoroColora">#c75450</color>
+    <color name="shortPauseColora">#007A80</color>
+    <color name="bottomNBColora">#625D73</color>
     <color name="golge">#27333333</color>
     <color name="white">#FFFFFFFF</color>
     <color name="yellow">#FFFF00</color>

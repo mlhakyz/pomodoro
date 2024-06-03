@@ -5,9 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
     android:background="@color/pomodoroColor"
-    >
+    tools:context=".MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -67,8 +66,7 @@
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Small"
                 app:strokeWidth="0dp"
                 tools:layout_editor_absoluteX="11dp"
-                tools:layout_editor_absoluteY="154dp"
-                />
+                tools:layout_editor_absoluteY="154dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/shortPauseBtn"
@@ -114,7 +112,7 @@
             android:fontFamily="@font/my_font"
             android:gravity="center"
             android:text="25:00"
-            android:textColor="@color/white"
+            android:textColor="#552222"
             android:textSize="150sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -131,14 +129,15 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/startPauseBtn"
-                android:layout_width="200dp"
-                android:layout_height="60dp"
-                android:backgroundTint="@color/white"
-                android:fontFamily="@font/heavitas"
+                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                android:layout_width="96dp"
+                android:layout_height="72dp"
+                android:backgroundTint="#1976D2"
+               app:icon="@drawable/play_icon"
+                app:iconGravity="textStart"
+                app:iconTint="@color/pomodoroTimeTextColor"
+                app:iconSize="35dp"
                 android:onClick="btnOnStartStop"
-                android:text="START"
-                android:textColor="@color/pomodoroColor"
-                android:textSize="30sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
