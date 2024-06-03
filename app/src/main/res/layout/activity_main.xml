@@ -67,7 +67,8 @@
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Small"
                 app:strokeWidth="0dp"
                 tools:layout_editor_absoluteX="11dp"
-                tools:layout_editor_absoluteY="154dp" />
+                tools:layout_editor_absoluteY="154dp"
+                />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/shortPauseBtn"

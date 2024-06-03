@@ -58,12 +58,8 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
         val pomodoroSharedPrefTime = sharedPrefTimeSettings.getInt(keyPomodoroName,pomodoroTimeMills.toInt())
         val pomodoroSharedPrefSec = sharedPrefTimeSettings.getInt("keySecPomodoroName",30)
 
-        if (pomodoroSharedPrefSec == 5 ){
-            pomodoroTimeText = "0$pomodoroSharedPrefSec:00"
-        }
-        else{
-            pomodoroTimeText = "$pomodoroSharedPrefSec:00"
-        }
+        pomodoroTimeText = "${pomodoroSharedPrefSec.toString().padStart(2, '0')}:00"
+
         binding.timeText.text = pomodoroTimeText
 
         pomodoroTimeMills = pomodoroSharedPrefTime.toLong()
@@ -80,12 +76,7 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
         pomodoroTimeMills = newPomodoroTime.toLong()
         selectedTimeInMillis = pomodoroTimeMills
 
-        if (pomodoroTime == 5 ){
-            pomodoroTimeText = "0$pomodoroTime:00"
-        }
-        else{
-            pomodoroTimeText = "$pomodoroTime:00"
-        }
+        pomodoroTimeText = "${pomodoroTime.toString().padStart(2, '0')}:00"
 
         binding.timeText.text = pomodoroTimeText
 
@@ -95,12 +86,9 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
         //ShortPause İşlemleri
         val newShortPauseTime = shortPauseTime *60000L
         shortPauseTimeMills = newShortPauseTime.toLong()
-        if (shortPauseTime == 5 ){
-            shortPauseTimeText = "0$shortPauseTime:00"
-        }
-        else{
-            shortPauseTimeText = "$shortPauseTime:00"
-        }
+
+        shortPauseTimeText = "${shortPauseTime.toString().padStart(2, '0')}:00"
+
 
         binding.timeText.text = shortPauseTimeText
 
@@ -110,13 +98,10 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
         //LongPause İşlemleri
 
         val newLongPauseTime = longPauseTime *60000L
-        shortPauseTimeMills = newShortPauseTime.toLong()
-        if (longPauseTime == 5 ){
-            longPauseTimeText = "0$longPauseTime:00"
-        }
-        else{
-            longPauseTimeText = "$longPauseTime:00"
-        }
+        longPauseTimeMills = newLongPauseTime.toLong()
+
+        longPauseTimeText = "${longPauseTime.toString().padStart(2, '0')}:00"
+
 
         binding.timeText.text = longPauseTimeText
 
@@ -124,13 +109,11 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
         editor.putInt("keySecLongPauseName",longPauseTime)
 
         // Seçilen süreye göre selectedTimeInMillis değerini güncelle
-        selectedTimeInMillis = if (restartControl == "pomodoro") {
-            newPomodoroTime
-        } else if (restartControl == "shortpause") {
-            newShortPauseTime
-        }
-        else {
-            newLongPauseTime
+        selectedTimeInMillis = when (restartControl) {
+            "pomodoro" -> newPomodoroTime
+            "shortpause" -> newShortPauseTime
+            else -> newLongPauseTime
+
         }
 
         editor.apply()
@@ -158,39 +141,35 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
         binding.startPauseBtn.setTextColor(getColor(textColor))
         binding.refreshBtn.iconTint = ColorStateList.valueOf(ContextCompat.getColor(this, refreshBtnColor))
 
-        // Set typeface for the appropriate button
-        if (btn == binding.pomodoroBtn) {
+    val selectedButton = when (btn) {
+        binding.pomodoroBtn -> {
             binding.pomodoroBtn.typeface = lftBoldFont
             binding.shortPauseBtn.setBackgroundColor(getColor(Colors.pomodoroColor))
             binding.longPauseBtn.setBackgroundColor(getColor(Colors.pomodoroColor))
-            binding.shortPauseBtn.typeface = lftMediumFont
-            binding.longPauseBtn.typeface = lftMediumFont
-
-        } else if(btn == binding.shortPauseBtn) {
+            lftMediumFont to listOf(binding.shortPauseBtn, binding.longPauseBtn)
+        }
+        binding.shortPauseBtn -> {
             binding.shortPauseBtn.typeface = lftBoldFont
             binding.pomodoroBtn.setBackgroundColor(getColor(Colors.shortPauseColor))
             binding.longPauseBtn.setBackgroundColor(getColor(Colors.shortPauseColor))
-            binding.pomodoroBtn.typeface = lftMediumFont
-            binding.longPauseBtn.typeface = lftMediumFont
+            lftMediumFont to listOf(binding.pomodoroBtn, binding.longPauseBtn)
         }
-        else{
+        else -> {
             binding.longPauseBtn.typeface = lftBoldFont
             binding.pomodoroBtn.setBackgroundColor(getColor(Colors.longPauseColor))
             binding.shortPauseBtn.setBackgroundColor(getColor(Colors.longPauseColor))
-            binding.pomodoroBtn.typeface = lftMediumFont
-            binding.shortPauseBtn.typeface = lftMediumFont
+            lftMediumFont to listOf(binding.pomodoroBtn, binding.shortPauseBtn)
         }
+    }
+
+    selectedButton.second.forEach { it.typeface = selectedButton.first }
 
     }
 
     private fun handlePomodoro(){
         val pomodoroSharedPrefSec = sharedPrefTimeSettings.getInt("keySecPomodoroName",30)
-        if (pomodoroSharedPrefSec == 5 ){
-            pomodoroTimeText = "0$pomodoroSharedPrefSec:00"
-        }
-        else{
-            pomodoroTimeText = "$pomodoroSharedPrefSec:00"
-        }
+        pomodoroTimeText = "${pomodoroSharedPrefSec.toString().padStart(2, '0')}:00"
+
         setTimerProperties(
             binding.pomodoroBtn,
             pomodoroTimeText,
@@ -210,14 +189,9 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
         val shortPauseSharedPrefTime = sharedPrefTimeSettings.getInt(keyShortPauseName,shortPauseTimeMills.toInt())
         val shortPauseSharedPrefSec = sharedPrefTimeSettings.getInt("keySecShortPauseName",5)
 
-        if (shortPauseSharedPrefSec == 5 ){
-            shortPauseTimeText = "0$shortPauseSharedPrefSec:00"
-        }
-        else{
-            shortPauseTimeText = "$shortPauseSharedPrefSec:00"
-        }
+       shortPauseTimeText = "${shortPauseSharedPrefSec.toString().padStart(2, '0')}:00"
 
-        binding.timeText.text = shortPauseTimeText
+       binding.timeText.text = shortPauseTimeText
 
         shortPauseTimeMills = shortPauseSharedPrefTime.toLong()
 
@@ -240,12 +214,7 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
         val longPauseSharedPrefTime = sharedPrefTimeSettings.getInt(keyLongPauseTimeName,longPauseTimeMills.toInt())
         val longPauseSharedPrefSec = sharedPrefTimeSettings.getInt("keySecLongPauseName",15)
 
-        if (longPauseSharedPrefSec == 5 ){
-            longPauseTimeText = "0$longPauseSharedPrefSec:00"
-        }
-        else{
-            longPauseTimeText = "$longPauseSharedPrefSec:00"
-        }
+        longPauseTimeText = "${longPauseSharedPrefSec.toString().padStart(2, '0')}:00"
 
         binding.timeText.text = longPauseTimeText
 
@@ -277,12 +246,13 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
         }*/
         selectedTimeInMillis = 5000
         mediaPlayer?.start()
-        if (!isTimerRunning) {
-
-            startTimer(if (timeLeftInMillis.toInt() == 0) selectedTimeInMillis else timeLeftInMillis)
-            binding.refreshBtn.visibility = View.VISIBLE
-        } else {
-            pauseTimer()
+        when {
+            !isTimerRunning -> {
+                val startTime = if (timeLeftInMillis.toInt() == 0) selectedTimeInMillis else timeLeftInMillis
+                startTimer(startTime)
+                binding.refreshBtn.visibility = View.VISIBLE
+            }
+            else -> pauseTimer()
         }
     }
     fun btnOnStartStop(view: View) {
@@ -291,20 +261,24 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
    private fun refresh() {
         timer?.cancel()
         timeLeftInMillis = 0
-        if (restartControl == "pomodoro"){
-            binding.timeText.text = pomodoroTimeText
-            pauseTimer()
-            binding.refreshBtn.visibility = View.INVISIBLE
-        }
-        else if (restartControl == "shortpause"){
-            binding.timeText.text = shortPauseTimeText
-            pauseTimer()
-            binding.refreshBtn.visibility = View.INVISIBLE
-        }else{
-            binding.timeText.text = longPauseTimeText
-            pauseTimer()
-            binding.refreshBtn.visibility = View.INVISIBLE
-        }
+
+       when(restartControl){
+           "pomodoro" -> {
+               binding.timeText.text = pomodoroTimeText
+               pauseTimer()
+               binding.refreshBtn.visibility = View.INVISIBLE
+           }
+           "shortpause" -> {
+               binding.timeText.text = shortPauseTimeText
+               pauseTimer()
+               binding.refreshBtn.visibility = View.INVISIBLE
+           }
+           "longpause" -> {
+               binding.timeText.text = longPauseTimeText
+               pauseTimer()
+               binding.refreshBtn.visibility = View.INVISIBLE
+           }
+       }
     }
     fun btnOnRefresh(view: View){
       refresh()
