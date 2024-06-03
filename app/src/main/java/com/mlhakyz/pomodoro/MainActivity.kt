@@ -267,6 +267,7 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
 
     }
 
+    @Synchronized // belirli iş parçacıkları bloke olmasın diye bu etiketi kullanıyoruz
     private fun handleOnStartStop(){
         println("onStartclick: "+selectedTimeInMillis)
 
@@ -320,6 +321,26 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
         bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
     }
 
+    private fun startNextTimer() {
+
+        when (restartControl) {
+            "pomodoro" -> {
+                shortPomodoroCycles++
+                if (shortPomodoroCycles == 4) {
+                    shortPomodoroCycles = 0
+                    handleLongPause()
+                } else {
+                    handleShortPause()
+                }
+            }
+            "shortpause", "longpause" -> {
+                handlePomodoro()
+            }
+        }
+        // Yeni zamanlayıcıyı başlat
+        handleOnStartStop()
+    }
+
     private fun startTimer(durationInMillis: Long){
         timer = object : CountDownTimer(durationInMillis, 1000) {
             override fun onTick(p0: Long) {
@@ -331,28 +352,8 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
                 binding.timeText.text = "00:00"
                 isTimerRunning = false
                 binding.startPauseBtn.text = "START"
+                startNextTimer() // Yeni zamanlayıcıyı başlat
 
-                if (restartControl == "pomodoro"){
-                    shortPomodoroCycles++
-                    if(shortPomodoroCycles == 4){
-                        shortPomodoroCycles = 0
-                        handleLongPause()
-                        handleOnStartStop()
-                    }else{
-                        handleShortPause()
-                        handleOnStartStop()
-                    }
-
-                }
-                else if(restartControl == "shortpause"){
-                    handlePomodoro()
-                    handleOnStartStop()
-
-                }
-                else if(restartControl == "longpause"){
-                    handlePomodoro()
-                    handleOnStartStop()
-                }
             }
         }.start()
 
