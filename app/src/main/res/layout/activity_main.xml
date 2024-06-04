@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/pomodoroColor"
+    android:background="@color/longPauseColor"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -27,7 +27,7 @@
             android:onClick="btnOnSettings"
             app:icon="@drawable/settings512"
             app:iconGravity="textStart"
-            app:iconTint="@color/white" />
+            app:iconTint="@color/pomodoroTimeTextColor" />
     </LinearLayout>
 
     <LinearLayout
@@ -112,7 +112,7 @@
             android:fontFamily="@font/my_font"
             android:gravity="center"
             android:text="25:00"
-            android:textColor="#552222"
+            android:textColor="@color/longTimeTextColor"
             android:textSize="150sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -129,15 +129,15 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/startPauseBtn"
-                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                style="?attr/materialIconButtonFilledTonalStyle"
                 android:layout_width="96dp"
                 android:layout_height="72dp"
-                android:backgroundTint="#1976D2"
-               app:icon="@drawable/play_icon"
-                app:iconGravity="textStart"
-                app:iconTint="@color/pomodoroTimeTextColor"
-                app:iconSize="35dp"
+                android:backgroundTint="@color/longStartButtonColor"
                 android:onClick="btnOnStartStop"
+                app:icon="@drawable/play_icon"
+                app:iconGravity="textStart"
+                app:iconSize="30dp"
+                app:iconTint="@color/longTimeTextColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -147,19 +147,22 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/refreshBtn"
                 style="?attr/materialIconButtonFilledTonalStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
                 android:layout_marginEnd="16dp"
-                android:backgroundTint="@color/white"
+                android:backgroundTint="@color/longRefreshButtonColor"
                 android:gravity="center_horizontal|center_vertical"
                 android:onClick="btnOnRefresh"
-                android:visibility="invisible"
+                android:visibility="visible"
                 app:icon="@drawable/refresharrow512"
-                app:iconTint="@color/pomodoroColor"
+                app:iconGravity="textStart"
+                app:iconTint="@color/longTimeTextColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.147"
                 app:layout_constraintStart_toEndOf="@+id/startPauseBtn"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
