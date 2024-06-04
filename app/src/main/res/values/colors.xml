@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="pomodoroColor">#F8DFDF</color>
-    <color name="pomodoroRefreshButtonColor">#FFCCCB</color>
-    <color name="pomodoroStartButtonColor">#FA7778</color>
+    <color name="pomodoroRefreshButtonColor">#ffcccc</color>
+    <color name="pomodoroStartButtonColor">#ffaaaa</color>
     <color name="pomodoroTimeTextColor">#552222</color>
-    <color name="shortPauseColor">#E1F0FD</color>
-    <color name="shortRefreshButtonColor">#B4CFEE</color>
-    <color name="shortStartButtonColor">#78A5DF</color>
-    <color name="shortTimeTextColor">#162F47</color>
-    <color name="longPauseColor">#F0E3FF</color>
-    <color name="longRefreshButtonColor">#DEC1FF</color>
-    <color name="longStartButtonColor">#CEA3FF</color>
-    <color name="longTimeTextColor">#33255A</color>
+    <color name="shortPauseColor">#c9e3e3</color>
+    <color name="shortRefreshButtonColor">#93c9c9</color>
+    <color name="shortStartButtonColor">#66b2b2</color>
+    <color name="shortTimeTextColor">#004c4c</color>
+    <color name="longPauseColor">#E1F0FD</color>
+    <color name="longRefreshButtonColor">#B4CFEE</color>
+    <color name="longStartButtonColor">#78A5DF</color>
+    <color name="longTimeTextColor">#162F47</color>
     <color name="bottomNBColor">#625D73</color>
     <color name="longPauseColora">#5F4B8B</color>
     <color name="pomodoroColora">#c75450</color>
@@ -34,4 +34,8 @@
     <color name="navy">#000080</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="longPauseColorYEDEK">#F0E3FF</color>
+    <color name="longRefreshButtonColorYEDEK">#DEC1FF</color>
+    <color name="longStartButtonColorYEDEK">#B87AFF</color>
+    <color name="longTimeTextColorYEDEK">#33255A</color>
 </resources>

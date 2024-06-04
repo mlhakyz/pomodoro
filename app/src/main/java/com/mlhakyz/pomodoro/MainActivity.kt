@@ -128,7 +128,8 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
     }
 
 // Timer görünümünü ayarlar ve arka plan rengini değiştirir
-private fun setTimerProperties(btn: View, timeText: String, restartControl: String, selectedTimeInMillis: Long, bgColor: Int, textColor: Int, refreshBtnColor: Int) {
+private fun setTimerProperties(btn: View, timeText: String, restartControl: String, selectedTimeInMillis: Long, bgColor: Int, settingsBtnColor: Int,timeTextColor: Int,startBtnColor: Int,startBtnIconColor: Int, refreshBtnColor: Int, refreshBtnIconColor: Int) {
+
         timer?.cancel()
         timeLeftInMillis = 0
         btn.setBackgroundColor(resources.getColor(Colors.buttonShadowColor))
@@ -138,8 +139,12 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
         this.selectedTimeInMillis = selectedTimeInMillis
         pauseTimer()
         binding.main.setBackgroundColor(getColor(bgColor))
-        binding.startPauseBtn.setTextColor(getColor(textColor))
-        binding.refreshBtn.iconTint = ColorStateList.valueOf(ContextCompat.getColor(this, refreshBtnColor))
+    binding.settingsBtn.iconTint = ColorStateList.valueOf(ContextCompat.getColor(this,timeTextColor))
+    binding.timeText.setTextColor(ContextCompat.getColor(this, timeTextColor))
+        binding.startPauseBtn.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, startBtnColor))
+        binding.startPauseBtn.iconTint = ColorStateList.valueOf(ContextCompat.getColor(this, startBtnIconColor))
+        binding.refreshBtn.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, refreshBtnColor))
+        binding.refreshBtn.iconTint = ColorStateList.valueOf(ContextCompat.getColor(this, refreshBtnIconColor))
 
     val selectedButton = when (btn) {
         binding.pomodoroBtn -> {
@@ -176,8 +181,12 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
             "pomodoro",
             pomodoroTimeMills,
             Colors.pomodoroColor,
-            Colors.pomodoroColor,
-            Colors.pomodoroColor
+            Colors.pomodoroTimeTextColor,
+            Colors.pomodoroTimeTextColor,
+            Colors.pomodoroStartButtonColor,
+            Colors.pomodoroTimeTextColor,
+            Colors.pomodoroRefreshButtonColor,
+            Colors.pomodoroTimeTextColor
         )
     }
 
@@ -201,8 +210,12 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
             "shortpause",
             shortPauseTimeMills,
             Colors.shortPauseColor,
-            Colors.shortPauseColor,
-            Colors.shortPauseColor
+            Colors.shortTimeTextColor,
+            Colors.shortTimeTextColor,
+            Colors.shortStartButtonColor,
+            Colors.shortTimeTextColor,
+            Colors.shortRefreshButtonColor,
+            Colors.shortTimeTextColor
         )
 
     }
@@ -227,8 +240,12 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
             "longpause",
             longPauseTimeMills,
             Colors.longPauseColor,
-            Colors.longPauseColor,
-            Colors.longPauseColor
+            Colors.longTimeTextColor,
+            Colors.longTimeTextColor,
+            Colors.longStartButtonColor,
+            Colors.longTimeTextColor,
+            Colors.longRefreshButtonColor,
+            Colors.longTimeTextColor
         )
     }
     fun longPauseOnClick(view: View){
@@ -325,29 +342,38 @@ private fun setTimerProperties(btn: View, timeText: String, restartControl: Stri
             override fun onFinish() {
                 binding.timeText.text = "00:00"
                 isTimerRunning = false
-                binding.startPauseBtn.text = "START"
+                binding.startPauseBtn.setIconResource(R.drawable.pause)
                 startNextTimer() // Yeni zamanlayıcıyı başlat
 
             }
         }.start()
 
         isTimerRunning = true
-        binding.startPauseBtn.text = "STOP"
+        binding.startPauseBtn.setIconResource(R.drawable.pause)
 
     }
 
     private fun pauseTimer() {
         timer?.cancel()
         isTimerRunning = false
-        binding.startPauseBtn.text = "START"
+        binding.startPauseBtn.setIconResource(R.drawable.play_icon)
         binding.refreshBtn.visibility = View.INVISIBLE
     }
 }
 
 object Colors {
     val pomodoroColor: Int = R.color.pomodoroColor
+    val pomodoroRefreshButtonColor: Int = R.color.pomodoroRefreshButtonColor
+    val pomodoroStartButtonColor: Int = R.color.pomodoroStartButtonColor
+    val pomodoroTimeTextColor: Int = R.color.pomodoroTimeTextColor
     val shortPauseColor: Int = R.color.shortPauseColor
+    val shortRefreshButtonColor: Int = R.color.shortRefreshButtonColor
+    val shortStartButtonColor: Int = R.color.shortStartButtonColor
+    val shortTimeTextColor: Int = R.color.shortTimeTextColor
     val longPauseColor: Int = R.color.longPauseColor
+    val longRefreshButtonColor: Int = R.color.longRefreshButtonColor
+    val longStartButtonColor: Int = R.color.longStartButtonColor
+    val longTimeTextColor: Int = R.color.longTimeTextColor
     val buttonShadowColor: Int = R.color.golge
 
 }
