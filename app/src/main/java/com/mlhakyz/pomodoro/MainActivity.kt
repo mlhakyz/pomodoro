@@ -130,37 +130,42 @@ class MainActivity : AppCompatActivity() , BottomSheetFragment.BottomSheetListen
 // Timer görünümünü ayarlar ve arka plan rengini değiştirir
 private fun setTimerProperties(btn: View, timeText: String, restartControl: String, selectedTimeInMillis: Long, bgColor: Int, settingsBtnColor: Int,timeTextColor: Int,startBtnColor: Int,startBtnIconColor: Int, refreshBtnColor: Int, refreshBtnIconColor: Int) {
 
-        timer?.cancel()
-        timeLeftInMillis = 0
-        btn.setBackgroundColor(resources.getColor(Colors.buttonShadowColor))
+    timer?.cancel()
+    timeLeftInMillis = 0
 
-        binding.timeText.text = timeText
-        this.restartControl = restartControl
-        this.selectedTimeInMillis = selectedTimeInMillis
-        pauseTimer()
-        binding.main.setBackgroundColor(getColor(bgColor))
+    binding.timeText.text = timeText
+    this.restartControl = restartControl
+    this.selectedTimeInMillis = selectedTimeInMillis
+    pauseTimer()
+    binding.main.setBackgroundColor(getColor(bgColor))
     binding.settingsBtn.iconTint = ColorStateList.valueOf(ContextCompat.getColor(this,timeTextColor))
     binding.timeText.setTextColor(ContextCompat.getColor(this, timeTextColor))
-        binding.startPauseBtn.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, startBtnColor))
-        binding.startPauseBtn.iconTint = ColorStateList.valueOf(ContextCompat.getColor(this, startBtnIconColor))
-        binding.refreshBtn.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, refreshBtnColor))
-        binding.refreshBtn.iconTint = ColorStateList.valueOf(ContextCompat.getColor(this, refreshBtnIconColor))
-
+    binding.startPauseBtn.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, startBtnColor))
+    binding.startPauseBtn.iconTint = ColorStateList.valueOf(ContextCompat.getColor(this, startBtnIconColor))
+    binding.refreshBtn.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, refreshBtnColor))
+    binding.refreshBtn.iconTint = ColorStateList.valueOf(ContextCompat.getColor(this, refreshBtnIconColor))
+    binding.pomodoroBtn.iconTint = ColorStateList.valueOf(ContextCompat.getColor(this,timeTextColor))
+    binding.shortPauseBtn.iconTint = ColorStateList.valueOf(ContextCompat.getColor(this,timeTextColor))
+    binding.longPauseBtn.iconTint = ColorStateList.valueOf(ContextCompat.getColor(this,timeTextColor))
     val selectedButton = when (btn) {
         binding.pomodoroBtn -> {
+            println("burası çalıştı")
             binding.pomodoroBtn.typeface = lftBoldFont
+            binding.pomodoroBtn.setBackgroundColor(getColor(Colors.pomodoroStartButtonColor))
             binding.shortPauseBtn.setBackgroundColor(getColor(Colors.pomodoroColor))
             binding.longPauseBtn.setBackgroundColor(getColor(Colors.pomodoroColor))
             lftMediumFont to listOf(binding.shortPauseBtn, binding.longPauseBtn)
         }
         binding.shortPauseBtn -> {
             binding.shortPauseBtn.typeface = lftBoldFont
+            binding.shortPauseBtn.setBackgroundColor(getColor(Colors.shortStartButtonColor))
             binding.pomodoroBtn.setBackgroundColor(getColor(Colors.shortPauseColor))
             binding.longPauseBtn.setBackgroundColor(getColor(Colors.shortPauseColor))
             lftMediumFont to listOf(binding.pomodoroBtn, binding.longPauseBtn)
         }
         else -> {
             binding.longPauseBtn.typeface = lftBoldFont
+            binding.longPauseBtn.setBackgroundColor(getColor(Colors.longStartButtonColor))
             binding.pomodoroBtn.setBackgroundColor(getColor(Colors.longPauseColor))
             binding.shortPauseBtn.setBackgroundColor(getColor(Colors.longPauseColor))
             lftMediumFont to listOf(binding.pomodoroBtn, binding.shortPauseBtn)
